@@ -1,0 +1,58 @@
+<%- include("templates/header") %>
+<div class="d-flex flex-column min-vh-100">
+  <div class="container" id="signUp">
+    <h1 style="color: rgb(0, 0, 0);">Sign Up</h1>
+    <form action="/signupSubmit" method="post">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input style="width: 30%;"
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          placeholder="Enter your email"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username:</label>
+        <input style="width: 30%;"
+          type="text"
+          id="username"
+          name="username"
+          class="form-control"
+          placeholder="Enter your username"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input style="width: 30%;"
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          placeholder="Enter your password"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+<style>
+
+  .form-label {
+    /* color: wheat; */
+    font-size: 18px;
+  }
+  body {
+    background-image: url(/im14.jpeg);
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(2px);
+  }
+  #signUp {
+    margin-left: 5.5%;
+    padding: 2%;
+    border-radius: 50px;
+  }
+</style>
+<%- include("templates/footer") %>
