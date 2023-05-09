@@ -256,6 +256,10 @@ app.post('/promote', async (req, res) => {
   }
 });
 
+app.get('/aboutUs', (req, res) => {
+  res.render("aboutUs");
+});
+
 
 app.use(express.static(__dirname + "/public"));
 
