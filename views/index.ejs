@@ -1,0 +1,31 @@
+<%- include("templates/header") %> 
+    <body class="d-flex flex-column min-vh-100" style="background-image: url(/im12.jpeg); background-size: cover; background-position: center;">
+      <div class="overlay"></div>
+      <div class="container my-auto">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-6 text-center">
+            <h1 class="mb-1" style="color: white;">Welcome to Meal Genie!</h1>
+            <p class="mb-2" style="color: white;">Unleash Your Inner Chef with MealGenie</p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <a href="signUp" class="btn btn-primary btn-lg mx-3">Sign Up</a>
+            <a href="login" class="btn btn-secondary btn-lg mx-3">Log In</a>
+          </div>
+        </div>
+      </div>
+      <style>
+        .overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.2);
+          z-index: -1;
+        }
+      </style>
+    </body>
+
+    
+
+<%- include("templates/footer") %> 
