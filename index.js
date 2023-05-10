@@ -260,6 +260,9 @@ app.get('/aboutUs', (req, res) => {
   res.render("aboutUs");
 });
 
+app.get('/favorites', (req, res) => {
+  res.render("favorites");
+});
 
 app.use(express.static(__dirname + "/public"));
 
