@@ -1,6 +1,4 @@
 <%- include("templates/header") %>
-
-<head>
   <style>
     .image-container {
       width: 25%;
@@ -44,9 +42,7 @@
       }
     }
   </style>
-</head>
-
-<body>
+      <div style="height: 120px;"></div>
   <div class="container">
     <div class="card d-flex flex-row align-items-stretch mb-3">
       <div class="image-container">
@@ -87,7 +83,7 @@
       </div>
     </div>
   </div>
-
+  <div style="height: 50px;"></div>
   <script>
     // this deletes the card when the heart btn is clicked
     const heartBtns = document.querySelectorAll('.heart-btn');
@@ -100,8 +96,4 @@
       });
     });
   </script>
-</body>
-
-</html>
-
 <%- include("templates/footer") %>

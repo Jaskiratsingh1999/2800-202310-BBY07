@@ -8,13 +8,6 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
-const pictures = [
-  "img1.jpeg",
-  "img2.jpeg",
-  "img3.jpeg"
-];
-
-
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -55,40 +48,6 @@ app.use(session({
     resave: true
 }
 ));
-
-function isValidSession(req) {
-  if (req.session.authenticated) {
-      return true;
-  }
-  return false;
-}
-
-function isAdmin(req) {
-  if (req.session.user_type == 'admin') {
-      return true;
-  }
-  return false;
-}
-
-function sessionValidation(req,res,next) {
-  if (isValidSession(req)) {
-      next();
-  }
-  else {
-      res.redirect('/login');
-  }
-}
-
-function adminAuthorization(req, res, next) {
-  if (!isAdmin(req)) {
-      res.status(403);
-      res.render("403", {error: "Not Authorized"});
-      return;
-  }
-  else {
-      next();
-  }
-}
 
 app.get('/', (req, res) => {
   if (!req.session.authenticated) {
@@ -225,36 +184,9 @@ app.get('/members', (req, res) => {
   if (!req.session.authenticated) {
       res.redirect('/');
   }
-  res.render("members", { username: username ,pictures: pictures, email: email});
+  res.render("members", { username: username ,email: email});
 });
 
-app.get('/admin', sessionValidation, adminAuthorization, async (req,res) => {
-  const result = await userCollection.find().project({username: 1, user_type: 1,  _id: 1}).toArray();
-
-  res.render("admin", {users: result});
-});
-
-app.post('/promote', async (req, res) => {
-  const {userId} = req.body;
-  const newRole = req.body.role;
-  console.log(userId);
-  console.log(newRole);
-  const ObjectId = require('mongodb').ObjectId;
-  try {
-    const result = await userCollection.updateOne(
-      { _id: new ObjectId(userId) },
-      { $set: { user_type: newRole } }
-    );
-    if (result.modifiedCount === 1) {
-      res.redirect('/admin');
-    } else {
-      res.status(500).send('Error promoting user');
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).send('Error promoting user');
-  }
-});
 
 app.get('/aboutUs', (req, res) => {
   res.render("aboutUs");
@@ -263,6 +195,10 @@ app.get('/aboutUs', (req, res) => {
 app.get('/favorites', (req, res) => {
   res.render("favorites");
 });
+app.get('/help', (req, res) => {
+  res.render("help");
+});
+
 
 app.use(express.static(__dirname + "/public"));
 
