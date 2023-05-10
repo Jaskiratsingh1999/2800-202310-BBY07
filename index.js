@@ -260,6 +260,10 @@ app.get('/aboutUs', (req, res) => {
   res.render("aboutUs");
 });
 
+app.get('/help', (req, res) => {
+  res.render("help");
+});
+
 
 app.use(express.static(__dirname + "/public"));
 
