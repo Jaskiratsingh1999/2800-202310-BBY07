@@ -92,6 +92,7 @@ app.post('/signupSubmit', async (req, res) => {
     var username = req.body.username;
     var email = req.body.email;
     var password = req.body.password;
+    var dietaryPref = req.body.dietaryPreferences;
 
     if (!username || !email || !password) {
         let errorMsg =
@@ -116,15 +117,14 @@ app.post('/signupSubmit', async (req, res) => {
     }
 
     var hashedPassword = await bcrypt.hash(password, saltRounds);
-    await userCollection.insertOne({username: username, email: email, password: hashedPassword, user_type: "user"});
+    
+    await userCollection.insertOne({username: username, email: email, password: hashedPassword, dietary_preference: dietaryPref});
     req.session.authenticated = true; 
     req.session.email = email;  
     req.session.username = username;  
     console.log("Inserted user");
     res.redirect("/members");
 });
-
-
 
 app.get("/login", (req, res) => {
   res.render("login");
@@ -210,3 +210,4 @@ app.get("*", (req, res) => {
 app.listen(port, () => {
     console.log("Node application listening on port " + port);
 }); 
+
