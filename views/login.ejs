@@ -1,45 +1,70 @@
 <%- include("templates/header") %>
 
-<div class="d-flex flex-column min-vh-100">
-  <div class="container py-5" >
-    <div class="row justify-content-center align-items-center">
-      <div class="col-md-6 mt-5" id="overlay">
-        <h1 class="text-center mb-5 mt-5">Welcome Back Genies!</h1>
-        <form action="/loggingin" method="post">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email address:</label>
-            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+  <div class="d-flex flex-column min-vh-100">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-6 mt-5" id="overlay">
+          <h1 class="text-center mb-5 mt-5">Welcome Back Genies!</h1>
+          <form action="/loggingin" method="post">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address:</label>
+              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password:</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+              <p id="forgotPasswordMessage" name="forgotPasswordMessage"></p>
+              <p><a href="#" onclick="handleForgotPassword()">I forgot my password</a></p>
+            </div>
+            <button type="submit" class="btn btn-primary">Ready, Set, Cook!</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<style>
-  .form-label {
-    font-size: 18px;
-  }
-  body {
-    background-image: url(/im11.jpeg);
-    background-size: cover;
-    background-position: center;
-    backdrop-filter: blur(5px); /* add backdrop filter to blur the background */
-  }
-  #overlay {
-    position: absolute;
-    margin-left: 5%;
-    padding: 2%;
-    background-color: rgba(234, 140, 140, 0.2);
-    border-radius: 50px;
-    z-index: 2; /* add z-index to position above the blurred background */
-  }
-</style>
-<%- include("templates/footer") %>
+  <style>
+    .form-label {
+      font-size: 18px;
+    }
 
+    body {
+      background-image: url(/im11.jpeg);
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(5px);
+      /* add backdrop filter to blur the background */
+    }
 
+    #overlay {
+      position: absolute;
+      margin-left: 5%;
+      padding: 2%;
+      background-color: rgba(234, 140, 140, 0.2);
+      border-radius: 50px;
+      z-index: 2;
+      /* add z-index to position above the blurred background */
+    }
+  </style>
+  <script>
+    document.getElementById("forgotPasswordLink").addEventListener("click", function (event) {
+      event.preventDefault();
+      handleForgotPassword();
+    });
+
+    function handleForgotPassword() {
+      const email = document.getElementById("email").value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!email) {
+        document.getElementById("forgotPasswordMessage").textContent =
+          "If you have forgotten your password, please enter your email in the email address bar and then click on the link below.";
+      } else if (!emailRegex.test(email)) {
+        document.getElementById("forgotPasswordMessage").textContent = "Please enter a valid email address.";
+      } else {
+        // If email is entered and has the correct format, navigate to the /forgot-password route
+        window.location.href = `/forgot-password?email=${encodeURIComponent(email)}`;
+      }
+    }
+  </script>
+  <%- include("templates/footer") %>

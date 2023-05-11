@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
       res.render('index',  {authenticated: false} );
   }
   else {
-      res.render('homePage', {authenticated: true, username: req.session.username, pictures: pictures});
+      res.render('members', {authenticated: true, username: req.session.username});
   }
 });
 
@@ -129,7 +129,29 @@ app.post('/signupSubmit', async (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login");
 });
-  
+
+/* Section handling code for forgotten password  */
+//////////////////////////////////////////////////
+
+app.get('/forgot-password', async (req, res) => {
+  const { email } = req.query;
+
+  // Generate a unique reset token
+  const resetToken = generateResetToken();
+
+  // Store the reset token in the user's document
+  await updateUserResetToken(email, resetToken);
+
+  // Send the password reset email with the reset token
+
+  // Redirect the user to a password reset confirmation page
+  res.redirect('/password-reset-confirmation');
+});
+
+
+
+//////////////////////////////////////////////////////
+/* Section handling code for forgotten password END */
 
 app.post('/loggingin', async (req, res) => {
     var email = req.body.email;
