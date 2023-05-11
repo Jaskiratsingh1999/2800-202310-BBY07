@@ -121,7 +121,7 @@ app.post('/signupSubmit', async (req, res) => {
     const validationResult = schema.validate({ username, email, password });
     if (validationResult.error != null) {
         console.log(validationResult.error);
-        res.render("errorMessage", { error: `${validationResult.error.message}`});
+        res.render("404", { error: `${validationResult.error.message}`});
         return;
     }
 
@@ -148,7 +148,7 @@ app.post('/loggingin', async (req, res) => {
     const validationResult = schema.validate(email);
     if (validationResult.error != null) {
         console.log(validationResult.error);
-        res.render("errorMessage", { error: `${validationResult.error.message}`});
+        res.render("404", { error: `${validationResult.error.message}`});
         return;
     }
 
@@ -159,7 +159,7 @@ app.post('/loggingin', async (req, res) => {
     console.log(result);
     if (result.length != 1) {
         console.log("Cannot find the user");
-        res.render("errorMessage", { error: "We cannot find at the moment! "});
+        res.render("404", { error: "We cannot find at the moment! "});
         return;
       }
       
@@ -175,7 +175,7 @@ app.post('/loggingin', async (req, res) => {
     }
     else {
         console.log("incorrect password");
-        res.render("errorMessage", { error: "Your Password Incorrect!"});
+        res.render("404", { error: "Your Password Incorrect!"});
         return;
     }
 });
@@ -204,11 +204,88 @@ app.get('/aboutUs', (req, res) => {
 app.get('/favorites', (req, res) => {
   res.render("favorites");
 });
+
 app.get('/help', (req, res) => {
   res.render("help");
 });
+
 app.get('/faq', (req, res) => {
   res.render("faq");
+});
+
+app.get('/profile', async (req, res) => {
+  if (!req.session.authenticated) {
+    res.redirect('/');
+  } else {
+    try {
+      const result = await userCollection.find({email: req.session.email}).project({email: 1, password: 1, username: 1, dietary_preference: 1, image: 1 ,id: 1}).toArray();
+      const user = result[0];
+      console.log(user.image);
+      res.render('profile', { user});
+    } catch (err) {
+      console.error('Failed to fetch user', err);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+});
+
+const MIN_PASSWORD_LENGTH = 4; // define minimum password length constant
+
+app.post('/profile/password', async (req, res) => {
+  const { password } = req.body;
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    return res.status(400).send(`Password must be at least ${MIN_PASSWORD_LENGTH} characters long`);
+  }
+  else{
+  const hashedPassword = await bcrypt.hash(password, 12);
+  console.log(hashedPassword);
+  const result = await userCollection.updateOne({ email: req.session.email }, { $set: { password: hashedPassword } });
+  if (result.modifiedCount === 1) {
+    console.log('Password updated successfully');
+    res.redirect('/profile');
+  } else {
+    res.send('Failed to update password');
+  }
+}
+});
+
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const { Console } = require("console");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads'); // set the destination folder for uploaded images
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9); // add a unique suffix to the filename to avoid overwriting existing files
+    const ext = path.extname(file.originalname);
+    cb(null, `${req.session.username}_${uniqueSuffix}${ext}`); // use the user ID to generate a unique filename
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/profile/image', upload.single('profileImage'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded');
+  }
+
+  const imageUrl = `uploads/${req.file.filename}`; // the URL to store in the database
+  try {
+    // update the user's image URL in the database
+    const result = await userCollection.updateOne({ email: req.session.email }, { $set: { image: imageUrl } });
+    if (result.modifiedCount === 1) {
+      console.log('Image updated successfully');
+      res.redirect('/profile');
+    } else {
+      res.send('Failed to update image');
+    }
+  } catch (error) {
+    console.log('Error updating image:', error);
+    res.send('Failed to update image');
+  }
 });
 
 app.use(express.static(__dirname + "/public"));
