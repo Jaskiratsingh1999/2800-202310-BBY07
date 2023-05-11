@@ -44,6 +44,32 @@ body{
 
 /* for desktop mode */
 
+.homePageButton {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #85b0de;
+    color: #000000;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+
+  .menu-items {
+    display: flex;
+    align-items: center;
+    margin-right: 32px; /* add some space to the right */
+  }
+  
+  .menu-items li {
+    margin-left: 16px;
+  }
+  
+  /* move buttons to the right */
+  .menu-items .button {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
 .navbar input[type='checkbox'],
 .navbar .hamburger-lines{
     display: none;
