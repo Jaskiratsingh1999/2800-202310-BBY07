@@ -58,6 +58,15 @@ app.get('/', (req, res) => {
   }
 });
 
+app.get('/favorites', (req, res) => {
+  if (!req.session.authenticated) {
+    res.redirect('/');
+  } else {
+    res.render('favorites', {authenticated: true, username: req.session.username});
+  }
+});
+
+
   app.get('/nosql-injection', async (req,res) => {
 	var username = req.query.user;
 
@@ -198,7 +207,9 @@ app.get('/favorites', (req, res) => {
 app.get('/help', (req, res) => {
   res.render("help");
 });
-
+app.get('/faq', (req, res) => {
+  res.render("faq");
+});
 
 app.use(express.static(__dirname + "/public"));
 
