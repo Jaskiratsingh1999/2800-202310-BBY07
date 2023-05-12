@@ -10,6 +10,10 @@
     --tenne-tawny-dark: #b54507;
 }
 body{
+    background-image: url("/search.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed; 
     font-weight: 300;
     font-size: 1.05rem;
     line-height: 1.6;
@@ -39,7 +43,7 @@ body{
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
-    background: #fff;
+    /* background: #fff; */
     text-align: center;
 }
 .meal-search{
