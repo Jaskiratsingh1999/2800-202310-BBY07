@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
       res.render('index',  {authenticated: false} );
   }
   else {
-      res.render('members', {authenticated: true, username: req.session.username});
+      res.redirect('/members');
   }
 });
 
