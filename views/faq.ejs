@@ -1,0 +1,126 @@
+<%- include("templates/header") %>
+      <div style="height: 150px;"></div>
+      <div class="faq-container mx-auto my-5">
+        <h1 class="mb-5 text-primary text-center" style="font-size: 36pt; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Frequently Asked Questions</h1>
+        <div class="faq-question">
+            <button class="faq-toggle">What is the Meal Genie app, and how does it work?</button>
+            <div class="faq-answer">
+                <p>Meal Genie is a personalized recipe app that uses advanced algorithms and AI to provide health-conscious foodies with new recipe suggestions based on their dietary preferences and cooking skills. The app helps users make informed and healthy food choices by providing tailored recipe options and ingredient suggestions.</p>
+            </div>
+        </div>
+        <div class="faq-question">
+            <button class="faq-toggle">Can I customize my recipes based on my dietary restrictions and preferences?</button>
+            <div class="faq-answer">
+                <p>Yes, Meal Genie allows users to customize their recipe suggestions based on their dietary preferences and restrictions, such as vegan, gluten-free, or low-carb.</p>
+            </div>
+        </div>
+        <div class="faq-question">
+            <button class="faq-toggle">Is Meal Genie free to use or does it require a subscription fee?</button>
+            <div class="faq-answer">
+                <p>Yes, Meal Genie is completely free to use and doesn't require any subscription. Users can download the app for free and access all of its features, including personalized recipe suggestions without any additional cost.</p>
+            </div>
+        </div>
+        <div class="faq-question">
+            <button class="faq-toggle">Are the recipes provided by the Meal Genie app easy to follow?</button>
+            <div class="faq-answer">
+                <p>Yes, the recipes provided by the Meal Genie app are easy to follow, and they include step-by-step instructions and photos to guide you through the cooking process.</p>
+            </div>
+        </div>
+        <div class="faq-question">
+            <button class="faq-toggle">Can users swap out ingredients for certain recipes?</button>
+            <div class="faq-answer">
+                <p>Yes, users can swap out ingredients for certain recipes. Meal Genie provides alternative ingredients and suggestions for substitutes to accommodate specific dietary needs and preferences.</p>
+            </div>
+        </div>
+    </div>
+    
+      <div style="height: 300px;"></div>
+
+
+</div>
+<style>
+.faq-container {
+  margin-top: 20px;
+}
+
+.faq-question {
+  margin-bottom: 10px;
+  background-color: transparent;
+  font-size: 18px;
+  color: #fff;
+}
+
+.faq-toggle {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  color: #040000;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+}
+
+.faq-answer {
+  background-color: transparent;
+  border-radius: 5px;
+  color: #c21010;
+  display: none;
+  margin-top: 5px;
+  padding: 0 10px;
+  font-size: 16px;
+}
+
+.faq-answer p {
+  margin: 0;
+}
+
+.faq-toggle:focus {
+  outline: none;
+}
+
+.faq-toggle.active {
+  background-color: #fff;
+  color: #333;
+}
+
+.faq-toggle.active + .faq-answer {
+  display: block;
+  background-color: #fff;
+}
+
+
+
+
+    body {
+      background-image: url(/im16.jpeg);
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(5px);
+    }
+  </style>
+  <script>
+    // Get all the question buttons
+var faqToggles = document.getElementsByClassName("faq-toggle");
+
+// Add event listeners to each button
+for (var i = 0; i < faqToggles.length; i++) {
+  faqToggles[i].addEventListener("click", function() {
+    // Toggle the active class on the button
+    this.classList.toggle("active");
+    // Toggle the display property of the answer div
+    var faqAnswer = this.nextElementSibling;
+    if (faqAnswer.style.display === "block") {
+      faqAnswer.style.display = "none";
+    } else {
+      faqAnswer.style.display = "block";
+    }
+  });
+}
+
+  </script>
+<%- include("templates/footer") %> 
+
+

@@ -1,0 +1,636 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+*,
+*::after,
+*::before{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    font-size: 62.5%;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* ############################# utility clases $$$$$$$$$$$$$$$$$ */
+
+.container{
+    max-width: 1100px;
+    width: 90%;
+    margin: auto;
+}
+
+.btn{
+    text-decoration: none;
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    margin-top: 1rem;
+    text-transform: uppercase;
+}
+
+.btn-primary{
+    background-color: rgb(194, 132, 40);
+    color: white;
+}
+
+
+/* ############################## navbar styling################## */
+
+/* for desktop mode */
+
+.homePageButton {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #85b0de;
+    color: #000000;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-left: 10px;
+  }
+
+  .menu-items {
+    display: flex;
+    align-items: center;
+    margin-right: 32px; /* add some space to the right */
+  }
+  
+  .menu-items li {
+    margin-left: 16px;
+  }
+  
+  /* move buttons to the right */
+  .menu-items .button {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+.navbar input[type='checkbox'],
+.navbar .hamburger-lines{
+    display: none;
+}
+
+.navbar{
+    box-shadow: 0px 5px 10px 0px rgb(126, 126, 126);
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    opacity: .8;
+    z-index: 12;
+}
+
+.navbar-container{
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+}
+
+.menu-items{
+    order: 2;
+    display: flex;
+}
+
+.logo{
+    order: 1;
+    font-size: 2.5rem;
+}
+
+.menu-items li{
+    list-style: none;
+    margin-left: 1.2rem;
+    font-size: 1.5rem;
+}
+
+.menu-items li a{
+    text-decoration: none;
+    color: #383838;
+    transition: all .2s ease-in;
+}
+
+.menu-items li a:hover{
+    color: rgb(113, 8, 211);
+    border-bottom: 1px solid rgb(113, 8, 211);
+}
+
+/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@ showcase styling @@@@@@@@@@@@@@@@ */
+
+.showcase-area{
+    height: 55vh;
+    background-image: url(header-image2.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.showcase-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 1.6rem;
+    
+}
+
+.showcase-area a:hover{
+    color: black;
+}
+
+/* ##################### about Us section Styling######################### */
+
+#About{
+    background-color: #f5f5f5;
+    /* height: 62vh; */
+}
+
+.aboutus h1{
+    font-size: 2.5rem;
+}
+
+.aboutus h4{
+    font-size: 1.6rem;
+}
+
+.aboutus p{
+    font-size: 1.4rem;
+}
+
+.aboutbox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 3rem;
+}
+
+.about-img{
+    flex: 1 1 300px;
+    padding: 3rem;
+} 
+
+.aboutbox .about-text{
+    flex: 1 1 300px;
+    padding: 3rem;
+    margin: auto;
+    position: relative;
+    animation-name: txt;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+}
+
+.about-img img{
+    display: block;
+    height: 400px;
+    max-width: 100%;
+    margin: auto;
+    object-fit: cover;
+    object-position: right;
+    position: relative;
+    animation-name: img1;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+}
+
+
+
+@keyframes img1{
+      from{
+        right:-110%;
+      }
+      to{
+        right:0%;
+      }
+}
+
+/* or u can also use transform translate in this keyframes eg; */
+
+/* @keyframes img1{
+    100%{transform: translatex(0%);}
+} */
+
+@keyframes txt{
+    from{
+        left: -110%;
+    }
+    to{
+        left: 0%;
+    }
+}
+
+/* ##################### food section styling #################*/
+
+#Food .textfood{
+    font-size: 2rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: center;
+    margin: 4rem auto;
+}
+
+.foodbox{
+    display: flex;
+    justify-content: space-between;
+}
+
+.food-type{
+    padding: 1rem;
+}
+
+.img-container{
+    position: relative;
+}
+
+.img-container::after{
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.822);
+    opacity: 0;
+    transition: all .3s ease-in-out;
+}
+
+.img-container:hover::after{
+    opacity: .8;
+}
+
+
+
+.food-content{
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 5;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    
+}
+
+.img-container:hover .food-content{
+    opacity: 1;
+    top: 45%;
+}
+
+.food-content h1{
+    margin-bottom: 1rem;
+    color: white;
+    font-size: 2.5rem;
+    
+}
+
+.food-type img{
+    display: block;
+    max-height: 300px;
+    width: 100%;
+    margin: auto;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ############################ food menu styling #################### */
+
+
+.food-menu-heading{
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    margin: 6rem auto;
+}
+
+
+.food-menu-item img{
+    display: block;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.food-menu-box{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.food-menu-item{
+    display: flex;
+    flex: 1 1 400px;
+    margin-bottom: 3rem;
+}
+
+.food-menu-description{
+    margin: auto;
+    padding: 3rem;
+}
+
+.food-menu-description .x{
+    font-size: 1.4rem;
+}
+
+.food-menu-description h2{
+    font-size: 1.6rem;
+}
+
+.food-menu-description .price{
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: green;
+}
+
+
+/* ##################################### customer reviews styling ########################## */
+
+#Testimonials{
+    background-color: #f1f1f1;
+}
+
+
+#Testimonials h2{
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 6rem;
+    margin-bottom: 1rem;
+    padding: 2rem 0;
+    font-weight: 500;
+}
+
+.customer-photo img{
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    margin:auto;
+    padding-bottom: 1rem;
+}
+
+.testimonial-box{
+    padding: 2rem 4rem;
+    text-align: center;
+}
+
+.testimonial-container{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.star-rating{
+    color: rgb(238, 157, 7);
+    font-size: 1.5rem;
+}
+
+
+.testimonial-text{
+    margin: 1rem;
+}
+
+
+/* ############################ contact form styling #################### */
+
+
+#Contact{
+     padding: 5rem 0;
+     background-color: #dfdfdf;
+}
+
+.contact-container{
+    display: flex;
+    background-color: white;
+}
+
+.contact-img{
+    width: 50%;
+    margin: auto;
+}
+
+.contact-img img{
+    display: block;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.form-container{
+    width: 50%;
+    margin: auto;
+    padding: 1rem;
+}
+
+.form-container input, .form-container textarea{
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1.8px solid rgb(167, 167, 167);
+    margin-bottom: 2rem;
+    box-shadow: none;
+    outline: none;
+
+}
+
+.form-container h2{
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    font-weight: 400;
+    color: #686868;
+}
+.form-container a{
+    font-size: 1.6rem;
+}
+
+
+/* ##################### footer styling ####################### */
+
+.footer{
+    background-color: #383838;
+}
+
+.footer h2{
+    font-size: 1.8rem;
+    color: white;
+    text-align: center;
+    padding: 3rem;
+    font-weight: 500;
+}
+
+
+/* ######################### media queries################### */
+
+@media (max-width: 768px){
+
+    .navbar{
+        opacity: .9;
+    }
+    
+    .navbar input[type='checkbox'],
+    .navbar .hamburger-lines{
+        display: block;
+    }
+
+    .logo,.menu-items{
+        /* display: none; */
+    }
+
+    .navbar-container{
+        display: block;
+        position: relative;
+        height: 64px;
+    }
+
+    .navbar-container input[type='checkbox']{
+        position: absolute;
+        width: 40px;
+        height: 32px;
+        top: 16px;
+        left: 8px;
+        z-index: 7;
+        opacity: 0;
+        
+    }
+
+    .navbar-container .hamburger-lines{
+        position: absolute;
+        width: 40px;
+        height: 32px;
+        top: 16px;
+        left: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 6;
+    }
+
+    .hamburger-lines .line{
+        display: block;
+        height: 4px;
+        width: 100%;
+        background-color: #1d1d1d;
+        border-radius: 10px;
+
+    }
+
+    .menu-items{
+        padding-top: 80px;
+        height: 100vh;
+        max-width: 250px;
+        background-color: #ffffff;
+        opacity: 0;
+        display: flex;
+        flex-direction: column;
+        margin-left: -40px;
+        padding-left: 35px;
+        transform: translatex(-150%);
+        transition: all .3s ease-in-out;
+
+
+    }
+    .logo{
+        position: absolute;
+        top: 10px;
+        right: 8px;
+        font-size: 3rem;
+    }
+
+    .menu-items li{
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .hamburger-lines .line1{
+        transform-origin: 0% 0%;
+        transition: all .3s ease-in-out;
+    }
+    .hamburger-lines .line3{
+        transform-origin: 0% 100%;
+        transition: all .3s ease-in-out;
+    }
+    .hamburger-lines .line2{
+        transition: all .4s ease-in-out;
+    }
+
+    .navbar-container input[type='checkbox']:checked ~ .menu-items{
+        opacity: 1;
+        transform: translatex(0);
+    }
+    .navbar-container input[type='checkbox']:checked ~ .hamburger-lines .line1{
+        transform: rotate(45deg);
+    }
+
+    .navbar-container input[type='checkbox']:checked ~ .hamburger-lines .line3{
+        transform: rotate(-45deg);
+    }
+    .navbar-container input[type='checkbox']:checked ~ .hamburger-lines .line2{
+        display: none;
+    }
+
+     /* ####################### food queries############## */
+
+     .foodbox{
+        display:flex;
+        flex-direction: column;
+     }
+
+     .img-container{
+        margin-bottom: 1rem;
+     }
+
+}
+
+@media (max-width: 500px){
+    .food-menu-item{
+        flex-direction: column;
+        text-align: center;
+    }
+    .food-menu-box img{
+        margin: auto;
+    }
+
+    .testimonial-container{
+        flex-direction: column;
+    }
+
+    .form-container{
+        width: 90%;
+    }
+    .contact-container{
+        display: flex;
+        flex-direction: column;
+    }
+    .contact-img{
+        width: 90%;
+        margin: 2rem auto;
+    }
+
+
+}
+
+@media (orientation: landscape) and (max-height: 500px){
+    .showcase-area{
+        height: 50vmax;
+    }
+}
+
+
+
+/* !Our Footer */
+
+#bottom-navbar > .footerImg {
+    width: 40px;
+    height: 30px;
+    margin: 0 auto;
+}
