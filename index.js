@@ -8,6 +8,20 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: 'meal.geniebby07@gmail.com',
+    clientId: '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
+    clientSecret: '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',
+    refreshToken: '1//04f0AR37Ibo_dCgYIARAAGAQSNwF-L9Ir_GZm9C7mXcz2xqzF_8cz8Acedkdg5YDhLz7sEY_ca7yrZ6afXMTbRE3Hfm8jNsJoa6c',
+    accessToken: 'ya29.a0AWY7CklNOpvYfMK3mu7bY00NWs1fNRU__jByj8FBii_xdbw3Xq07uT94wr2zhokY4bOU4BdgsgkAnnvOpF8cYMLaGeRV4EUwxdCv9SGpKHLXR_t_bgT6OGEXvxlt8phqWpAuZ-h1gmOCHACUVCGE8W9hW6MDaCgYKAc0SARMSFQG1tDrpxUNkrC5enxl0UMJkQFmRsA0163'
+  },
+});
+
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -16,7 +30,7 @@ const Joi = require("joi");
 
 app.set('view engine', 'ejs');
 
-const time = 1 * 60 * 60 * 1000; 
+const time = 1 * 60 * 60 * 1000;
 
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
@@ -35,53 +49,53 @@ const userCollection = database.db(mongodb_database).collection('users');
 app.use(express.urlencoded({ extended: false }));
 
 var mongoStore = MongoStore.create({
-    mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
-    crypto: {
-        secret: mongodb_session_secret
-    }
+  mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
+  crypto: {
+    secret: mongodb_session_secret
+  }
 })
 
 app.use(session({
-    secret: node_session_secret,
-    store: mongoStore, //default is memory store 
-    saveUninitialized: false,
-    resave: true
+  secret: node_session_secret,
+  store: mongoStore, //default is memory store 
+  saveUninitialized: false,
+  resave: true
 }
 ));
 
 app.get('/', (req, res) => {
   if (!req.session.authenticated) {
-      res.render('index',  {authenticated: false} );
+    res.render('index', { authenticated: false });
   }
   else {
-      res.render('members', {authenticated: true, username: req.session.username});
+    res.render('members', { authenticated: true, username: req.session.username });
   }
 });
 
-  app.get('/nosql-injection', async (req,res) => {
-	var username = req.query.user;
+app.get('/nosql-injection', async (req, res) => {
+  var username = req.query.user;
 
-	if (!username) {
-		res.send(`<h3>no user provided - try /nosql-injection?user=name</h3> <h3>or /nosql-injection?user[$ne]=name</h3>`);
-		return;
-	}
-	console.log("user: "+username);
+  if (!username) {
+    res.send(`<h3>no user provided - try /nosql-injection?user=name</h3> <h3>or /nosql-injection?user[$ne]=name</h3>`);
+    return;
+  }
+  console.log("user: " + username);
 
-	const schema = Joi.string().max(20).required();
-	const validationResult = schema.validate(username);
+  const schema = Joi.string().max(40).required();
+  const validationResult = schema.validate(username);
 
-	// A URL parameter of user[$ne]=name would get executed as a MongoDB command
-	// and may result in revealing information about all users or a successful
-	// login without knowing the correct password.
-	if (validationResult.error != null) {  
-	   console.log(validationResult.error);
-	   res.send("<h1 style='color:darkred;'>A NoSQL injection attack was detected!!</h1>");
-	   return;
-	}	
+  // A URL parameter of user[$ne]=name would get executed as a MongoDB command
+  // and may result in revealing information about all users or a successful
+  // login without knowing the correct password.
+  if (validationResult.error != null) {
+    console.log(validationResult.error);
+    res.send("<h1 style='color:darkred;'>A NoSQL injection attack was detected!!</h1>");
+    return;
+  }
 
-	const result = await userCollection.find({username: username}).project({username: 1, password: 1, _id: 1}).toArray();
+  const result = await userCollection.find({ username: username }).project({ username: 1, password: 1, _id: 1 }).toArray();
 
-    res.send(`<h1>HELLO ${username}</h1>`);
+  res.send(`<h1>HELLO ${username}</h1>`);
 });
 
 app.get("/signUp", (req, res) => {
@@ -89,41 +103,41 @@ app.get("/signUp", (req, res) => {
 });
 
 app.post('/signupSubmit', async (req, res) => {
-    var username = req.body.username;
-    var email = req.body.email;
-    var password = req.body.password;
-    var dietaryPref = req.body.dietaryPreferences;
+  var username = req.body.username;
+  var email = req.body.email;
+  var password = req.body.password;
+  var dietaryPref = req.body.dietaryPreferences;
 
-    if (!username || !email || !password) {
-        let errorMsg =
-          (!username ? "a username" :
-          (!email ? "an email address" :
+  if (!username || !email || !password) {
+    let errorMsg =
+      (!username ? "a username" :
+        (!email ? "an email address" :
           "a password"));
-        res.send(`Please provide ${errorMsg}. <br> <a href="/signup">Try again</a>`);
-        return;
-      }
-    const schema = Joi.object(
-        {
-            username: Joi.string().alphanum().max(20).required(),
-            email: Joi.string().email().required(),
-            password: Joi.string().max(20).required()
-        });
+    res.send(`Please provide ${errorMsg}. <br> <a href="/signup">Try again</a>`);
+    return;
+  }
+  const schema = Joi.object(
+    {
+      username: Joi.string().alphanum().max(40).required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().max(20).required()
+    });
 
-    const validationResult = schema.validate({ username, email, password });
-    if (validationResult.error != null) {
-        console.log(validationResult.error);
-        res.render("errorMessage", { error: `${validationResult.error.message}`});
-        return;
-    }
+  const validationResult = schema.validate({ username, email, password });
+  if (validationResult.error != null) {
+    console.log(validationResult.error);
+    res.render("errorMessage", { error: `${validationResult.error.message}` });
+    return;
+  }
 
-    var hashedPassword = await bcrypt.hash(password, saltRounds);
-    
-    await userCollection.insertOne({username: username, email: email, password: hashedPassword, dietary_preference: dietaryPref});
-    req.session.authenticated = true; 
-    req.session.email = email;  
-    req.session.username = username;  
-    console.log("Inserted user");
-    res.redirect("/members");
+  var hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  await userCollection.insertOne({ username: username, email: email, password: hashedPassword, dietary_preference: dietaryPref, resetToken: "" });
+  req.session.authenticated = true;
+  req.session.email = email;
+  req.session.username = username;
+  console.log("Inserted user");
+  res.redirect("/members");
 });
 
 app.get("/login", (req, res) => {
@@ -132,6 +146,17 @@ app.get("/login", (req, res) => {
 
 /* Section handling code for forgotten password  */
 //////////////////////////////////////////////////
+const { google } = require('googleapis');
+
+async function updateUserResetToken(email, resetToken) {
+  await userCollection.updateOne({ email: email }, { $set: { resetToken: resetToken } });
+}
+
+const crypto = require('crypto');
+
+function generateResetToken() {
+  return crypto.randomBytes(20).toString('hex');
+}
 
 app.get('/forgot-password', async (req, res) => {
   const { email } = req.query;
@@ -143,60 +168,146 @@ app.get('/forgot-password', async (req, res) => {
   await updateUserResetToken(email, resetToken);
 
   // Send the password reset email with the reset token
+  const resetLink = `http://${req.get('host')}/password-reset?token=${resetToken}&email=${email}`;
+  const mailOptions = {
+    from: 'meal.geniebby07@gmail.com',
+    to: email,
+    subject: 'Password Reset',
+    text: `Please click the following link to reset your password: ${resetLink}`
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Password reset email sent successfully');
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    // Handle the error appropriately
+  }
 
   // Redirect the user to a password reset confirmation page
   res.redirect('/password-reset-confirmation');
 });
 
+app.get('/password-reset-confirmation', (req, res) => {
+  res.render('password-reset-confirmation');
+});
+
+app.post('/reset-password', async (req, res) => {
+  const { resetToken, newPassword } = req.body;
+
+  try {
+    const user = await userCollection.findOne({ resetToken });
+
+    if (!user) {
+      return res.status(400).send('Invalid or expired reset token.');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    await userCollection.updateOne({ _id: user._id }, { $set: { password: hashedPassword, resetToken: '' } });
+
+    // Password updated successfully, redirect to password reset success page
+    return res.redirect('/password-reset-success');
+  } catch (error) {
+    console.error('Error updating password:', error);
+    // Handle the error appropriately
+    return res.status(500).send('An error occurred while updating the password.');
+  }
+});
+
+
+app.get('/password-reset', (req, res) => {
+  const resetToken = req.query.token;
+  const email = req.query.email;
+  res.render('password-reset', { resetToken, email });
+});
+
+app.get('/password-reset-success', (req, res) => {
+  res.render('password-reset-success');
+});
+
+
+
+// app.get('/oauth2callback', async (req, res) => {
+//   const oauth2Client = new google.auth.OAuth2(
+//     '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
+//     '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',
+//     'https://localhost:3000/oauth2callback'
+//   );
+app.get('/oauth2callback', async (req, res) => {
+  const oauth2Client = new google.auth.OAuth2(
+    '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
+    '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',
+    'http://localhost:3000/oauth2callback'  // <-- Make sure this matches the URI you set in Google Cloud Console
+  );
+
+  const { code } = req.query;
+
+  if (code) {
+    try {
+      const { tokens } = await oauth2Client.getToken(code);
+      oauth2Client.setCredentials(tokens);
+
+      // Now the oauth2Client is authorized and you can use it to make requests
+      // You could also save the tokens for later use
+
+      res.send('Successfully authenticated');
+    } catch (error) {
+      res.send('Error retrieving access token');
+    }
+  } else {
+    res.send('No authorization code found');
+  }
+});
 
 
 //////////////////////////////////////////////////////
 /* Section handling code for forgotten password END */
 
 app.post('/loggingin', async (req, res) => {
-    var email = req.body.email;
-    var password = req.body.password;
+  var email = req.body.email;
+  var password = req.body.password;
 
-    const schema = Joi.string().max(20).required();
-    const validationResult = schema.validate(email);
-    if (validationResult.error != null) {
-        console.log(validationResult.error);
-        res.render("errorMessage", { error: `${validationResult.error.message}`});
-        return;
-    }
-
-
-    const result = await userCollection.find({email: email}).project({email: 1, password: 1, username: 1, user_type: 1, _id: 1}).toArray();
+  const schema = Joi.string().max(40).required();
+  const validationResult = schema.validate(email);
+  if (validationResult.error != null) {
+    console.log(validationResult.error);
+    res.render("errorMessage", { error: `${validationResult.error.message}` });
+    return;
+  }
 
 
-    console.log(result);
-    if (result.length != 1) {
-        console.log("Cannot find the user");
-        res.render("errorMessage", { error: "We cannot find at the moment! "});
-        return;
-      }
-      
-    if (await bcrypt.compare(password, result[0].password)) {
-        console.log("correct password");
-        req.session.authenticated = true;
-        req.session.email = email;
-        req.session.username = result[0].username;
-        req.session.user_type = result[0].user_type;
-        req.session.cookie.maxAge = time;
-        res.redirect('/members');
-        return;
-    }
-    else {
-        console.log("incorrect password");
-        res.render("errorMessage", { error: "Your Password Incorrect!"});
-        return;
-    }
+  const result = await userCollection.find({ email: email }).project({ email: 1, password: 1, username: 1, user_type: 1, _id: 1 }).toArray();
+
+
+  console.log(result);
+  if (result.length != 1) {
+    console.log("Cannot find the user");
+    res.render("errorMessage", { error: "We cannot find at the moment! " });
+    return;
+  }
+
+  if (await bcrypt.compare(password, result[0].password)) {
+    console.log("correct password");
+    req.session.authenticated = true;
+    req.session.email = email;
+    req.session.username = result[0].username;
+    req.session.user_type = result[0].user_type;
+    req.session.cookie.maxAge = time;
+    res.redirect('/members');
+    return;
+  }
+  else {
+    console.log("incorrect password");
+    res.render("errorMessage", { error: "Your Password Incorrect!" });
+    return;
+  }
 });
 
 
 app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
+  req.session.destroy();
+  res.redirect('/');
 });
 
 
@@ -204,9 +315,9 @@ app.get('/members', (req, res) => {
   const email = req.session.email;
   const username = req.session.username;
   if (!req.session.authenticated) {
-      res.redirect('/');
+    res.redirect('/');
   }
-  res.render("members", { username: username ,email: email});
+  res.render("members", { username: username, email: email });
 });
 
 
@@ -225,11 +336,11 @@ app.get('/help', (req, res) => {
 app.use(express.static(__dirname + "/public"));
 
 app.get("*", (req, res) => {
-    res.status(404);
-    res.render("404");
+  res.status(404);
+  res.render("404");
 })
 
 app.listen(port, () => {
-    console.log("Node application listening on port " + port);
-}); 
+  console.log("Node application listening on port " + port);
+});
 
