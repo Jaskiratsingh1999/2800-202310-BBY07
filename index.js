@@ -138,7 +138,10 @@ app.post('/signupSubmit', async (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login");
 });
-  
+
+app.get('/search', (req, res) => {
+  res.render("search");
+});
 
 app.post('/loggingin', async (req, res) => {
     var email = req.body.email;
