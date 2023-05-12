@@ -1,0 +1,262 @@
+<%- include("templates/header") %>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<body class="d-flex flex-column min-vh-100">
+  <div
+    id="carouselExampleIndicators"
+    class="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="/im17.jpeg" class="d-block w-100" alt="..." />
+        <div class="carousel-caption">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <h2 style="color: rgb(255, 255, 255); font-size: 30px">
+            Healthy never tasted so good!
+          </h2>
+          <br />
+          <br />
+          <h3 style="color: rgb(225, 186, 186)">
+            Discover the perfect salad for your diet with Meal Genie's
+            personalized recommendations
+          </h3>
+          <div class="d-flex justify-content-center mt-3">
+            <button onclick="window.location.href='/login'" type="button" class="btn btn-primary me-3">Log In</button>
+            <button onclick="window.location.href='/signUp'" type="button" class="btn btn-secondary">Sign Up</button>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="/im18.jpeg" class="d-block w-100" alt="..." />
+        <div class="carousel-caption">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <h2 style="color: rgb(255, 255, 255); font-size: 30px">
+            Spicy, succulent, sensational!
+          </h2>
+          <br />
+          <br />
+          <h3 style="color: rgb(225, 186, 186)">
+            Let Meal Genie help you create delicious, restaurant-worthy dishes
+            right in your own kitchen!
+          </h3>
+          <div class="d-flex justify-content-center mt-3">
+            <button onclick="window.location.href='/login'" type="button" class="btn btn-primary me-3">Log In</button>
+            <button onclick="window.location.href='/signUp'" type="button" class="btn btn-secondary">Sign Up</button>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="/im19.jpeg" class="d-block w-100" alt="..." />
+        <div class="carousel-caption">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <h2 style="color: rgb(255, 255, 255); font-size: 30px">
+            Fruits, veggies, and more
+          </h2>
+          <br />
+          <br />
+          <h3 style="color: rgb(225, 186, 186)">
+            Eating healthy just got easier with Meal Genie's curated selection
+            of nutritious recipes.
+          </h3>
+          <div class="d-flex justify-content-center mt-3">
+            <button onclick="window.location.href='/login'" type="button" class="btn btn-primary me-3">Log In</button>
+            <button onclick="window.location.href='/signUp'" type="button" class="btn btn-secondary">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <section class="aboutus" id="About">
+    <div class="aboutbox container">
+      <div class="about-text">
+        <h1>About Us</h1>
+        <br />
+        <h2>The Story of Meal Genie: From Idea to App</h2>
+        <p>
+          At Meal Genie, healthy eating is easy and delicious. Our app's unique
+          ingredient matching system recommends recipes based on the items you
+          already have, helping you save time, money, and food waste. With video
+          tutorials and ingredient substitutes, you can feel confident and
+          inspired in the kitchen. Join our community of foodies and discover
+          just how delicious and simple healthy eating can be.<br />
+          Say goodbye to food waste and hello to a variety of flavorful and
+          nutritious meals. Our video tutorial feature provides step-by-step
+          instructions on how to prepare each recipe, so you can feel confident
+          in the kitchen and impress your friends and family. Plus, if you're
+          missing an ingredient, our app suggests suitable substitutes, so you
+          can still make the recipe without having to run to the store.
+        </p>
+      </div>
+      <div class="about-img">
+        <img src="about-photo.jpg" alt="strawberry" />
+      </div>
+    </div>
+  </section>
+
+  <section id="Testimonials">
+    <h2 class="testimonial-title">What Our Customers Say</h2>
+    <div class="testimonial-container container">
+      <div class="testimonial-box">
+        <div class="star-rating">
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        </div>
+        <p class="testimonial-text">
+          "I never thought eating healthy could be so easy! Meal Genie's
+          ingredient matching system and video tutorials have revolutionized the
+          way I approach meal prep. I love that I can use the ingredients I
+          already have on hand and still make delicious and nutritious meals. I
+          highly recommend Meal Genie to anyone looking to improve their eating
+          habits!"
+        </p>
+        <div class="customer-detail">
+          <div class="customer-photo"><img src="male-photo1.jpg" alt="" /></div>
+          <p class="customer-name">Jason K</p>
+        </div>
+      </div>
+
+      <div class="testimonial-box">
+        <div class="star-rating">
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        </div>
+        <p class="testimonial-text">
+          "I was always intimidated by cooking and didn't know where to start.
+          Meal Genie has been the perfect tool for me to learn new recipes and
+          gain confidence in the kitchen. The app's ingredient matching system
+          and substitute suggestions have been a lifesaver, and I love that I
+          can customize the recipes to fit my taste preferences. I'm grateful to
+          Meal Genie for making healthy eating accessible and enjoyable for me!"
+        </p>
+        <div class="customer-detail">
+          <div class="customer-photo"><img src="emily.jpeg" alt="" /></div>
+          <p class="customer-name">Emily T</p>
+        </div>
+      </div>
+
+      <div class="testimonial-box">
+        <div class="star-rating">
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        </div>
+        <p class="testimonial-text">
+          "Meal Genie has helped me save so much money on groceries! I used to
+          buy new ingredients for every recipe I wanted to try, but now I can
+          input the items I already have and get creative with the recipes Meal
+          Genie recommends."
+        </p>
+        <div class="customer-detail">
+          <div class="customer-photo"><img src="male-photo3.jpg" alt="" /></div>
+          <p class="customer-name">Alex M</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br />
+  <br />
+  <style>
+    #carouselExampleIndicators {
+      height: 80vh;
+      width: 100%;
+      margin-top: -80px;
+    }
+
+    .carousel-item {
+      height: 80vh;
+    }
+    .carousel-caption {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .carousel-item::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0) 0%,
+        rgba(0, 0.9, 0, 0.9) 100%
+      );
+    }
+  </style>
+</body>
+
+<%- include("templates/footer") %>
