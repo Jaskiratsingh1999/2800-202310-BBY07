@@ -10,17 +10,23 @@ const saltRounds = 12;
 
 const nodemailer = require('nodemailer');
 
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const refreshToken = process.env.REFRESH_TOKEN;
+const accessToken = process.env.ACCESS_TOKEN;
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     type: 'OAuth2',
     user: 'meal.geniebby07@gmail.com',
-    clientId: '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
-    clientSecret: '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',
-    refreshToken: '1//04f0AR37Ibo_dCgYIARAAGAQSNwF-L9Ir_GZm9C7mXcz2xqzF_8cz8Acedkdg5YDhLz7sEY_ca7yrZ6afXMTbRE3Hfm8jNsJoa6c',
-    accessToken: 'ya29.a0AWY7CklNOpvYfMK3mu7bY00NWs1fNRU__jByj8FBii_xdbw3Xq07uT94wr2zhokY4bOU4BdgsgkAnnvOpF8cYMLaGeRV4EUwxdCv9SGpKHLXR_t_bgT6OGEXvxlt8phqWpAuZ-h1gmOCHACUVCGE8W9hW6MDaCgYKAc0SARMSFQG1tDrpxUNkrC5enxl0UMJkQFmRsA0163'
+    clientId: clientId,
+    clientSecret: clientSecret,
+    refreshToken: refreshToken,
+    accessToken: accessToken
   },
 });
+
 
 const port = process.env.PORT || 3000;
 
