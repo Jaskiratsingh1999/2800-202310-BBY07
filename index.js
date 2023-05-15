@@ -244,18 +244,10 @@ app.get('/password-reset-success', (req, res) => {
   res.render('password-reset-success');
 });
 
-
-
-// app.get('/oauth2callback', async (req, res) => {
-//   const oauth2Client = new google.auth.OAuth2(
-//     '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
-//     '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',
-//     'https://localhost:3000/oauth2callback'
-//   );
 app.get('/oauth2callback', async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
-    '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
-    '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',
+    clientId,
+    clientSecret,
     'http://localhost:3000/oauth2callback'  // <-- Make sure this matches the URI you set in Google Cloud Console
   );
 
