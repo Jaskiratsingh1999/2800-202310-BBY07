@@ -31,6 +31,7 @@ const transporter = nodemailer.createTransport({
 const port = process.env.PORT || 3000;
 
 const app = express();
+app.use(express.json());
 
 const Joi = require("joi");
 
@@ -60,6 +61,7 @@ var mongoStore = MongoStore.create({
     secret: mongodb_session_secret
   }
 })
+
 
 app.use(session({
   secret: node_session_secret,
@@ -147,7 +149,7 @@ app.post('/signupSubmit', async (req, res) => {
 
   var hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  await userCollection.insertOne({ username: username, email: email, password: hashedPassword, dietary_preference: dietaryPref, resetToken: "" });
+  await userCollection.insertOne({ username: username, email: email, password: hashedPassword, dietary_preference: dietaryPref, resetToken: "", favorites: [] });
   req.session.authenticated = true;
   req.session.email = email;
   req.session.username = username;
@@ -303,6 +305,7 @@ app.post('/loggingin', async (req, res) => {
         req.session.email = email;
         req.session.username = result[0].username;
         req.session.user_type = result[0].user_type;
+        req.session._id = result[0]._id;
         req.session.cookie.maxAge = time;
         res.redirect('/members');
         return;
@@ -338,6 +341,74 @@ app.get('/aboutUs', (req, res) => {
 app.get('/favorites', (req, res) => {
   res.render("favorites");
 });
+
+/* CODE SECTION FOR HANDLING FAVORITES FUNCTION ON RECIPES */
+////////////////////////////////////////////////////////////////
+app.post('/add-favorite', async (req, res) => {
+  console.log(req.session.email);
+  const recipeName = req.body.recipeName;
+  console.log(recipeName);
+  if (!recipeName) {
+    return res.status(400).send({ success: false, error: 'Missing recipeName in request body' });
+  }
+
+  if (!req.session.email) {
+    return res.status(400).send({ success: false, error: 'Missing user email in session' });
+  }
+
+  try {
+    const result = await userCollection.updateOne(
+      { email: req.session.email }, 
+      { $addToSet: { favorites: recipeName } }
+    );
+
+    if (result.modifiedCount == 0) {
+      return res.status(400).send({ success: false, error: 'No user found with the provided ID' });
+    }
+
+    res.send({ success: true });
+  } catch(err) {
+    console.error("Error updating favorite: ", err);
+    res.status(500).send({ success: false, error: err.toString() });
+  }
+});
+
+
+app.get('/is-favorite', async (req, res) => {
+  console.log('Hit /is-favorite route');
+  const recipeName = req.query.recipeName;
+  console.log(recipeName);
+  if (!recipeName) {
+    return res.status(400).send({ success: false, error: 'Missing recipeName in query parameters' });
+  }
+
+  if (!req.session._id) {
+    return res.status(400).send({ success: false, error: 'Missing user ID in session' });
+  }
+
+  try {
+    const user = await userCollection.findOne(
+      { email: req.session.email } 
+    );
+
+    if (!user) {
+      return res.status(400).send({ success: false, error: 'No user found with the provided ID' });
+    }
+
+    const isFavorite = user.favorites.includes(recipeName);
+    res.send({ success: true, isFavorite });
+  } catch(err) {
+    console.error("Error checking favorite: ", err);
+    res.status(500).send({ success: false, error: err.toString() });
+  }
+});
+
+
+
+
+
+/* CODE SECTION FOR HANDLING FAVORITES FUNCTION ON RECIPES END */
+////////////////////////////////////////////////////////////////
 
 app.get('/help', (req, res) => {
   res.render("help");
