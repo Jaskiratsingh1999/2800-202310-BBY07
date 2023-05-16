@@ -77,37 +77,44 @@ recipeCloseBtn.addEventListener('click', () => {
 });
 
 
-// get meal list that matches with the ingredients
-function getMealList(){
-    let searchInputTxt = document.getElementById('search-input').value.trim();
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`)
-    .then(response => response.json())
-    .then(data => {
-        let html = "";
-        if(data.meals){
-            data.meals.forEach(meal => {
-                html += `
-                    <div class = "meal-item" data-id = "${meal.idMeal}">
-                        <div class = "meal-img">
-                            <img src = "${meal.strMealThumb}" alt = "food">
-                        </div>
-                        <div class = "meal-name">
-                            <h3>${meal.strMeal}</h3>
-                            <a href = "#" class = "recipe-btn">Get Recipe</a>
-                        </div>
-                    </div>
-                `;
-            });
-            mealList.classList.remove('notFound');
-        } else{
-            html = "Sorry, we didn't find any meal!";
-            mealList.classList.add('notFound');
-        }
-
-        mealList.innerHTML = html;
+// get meal list that matches with the ingredients, recipe name, or area
+function getMealList() {
+  let searchInputTxt = document.getElementById('search-input').value.trim();
+  Promise.all([
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`).then(response => response.json()),
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInputTxt}`).then(response => response.json()),
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${searchInputTxt}`).then(response => response.json()),
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchInputTxt}`).then(response => response.json())
+  ]).then(dataArr => {
+    let meals = [];
+    dataArr.forEach(data => {
+      if (data.meals) {
+        meals.push(...data.meals);
+      }
     });
+    let html = "";
+    if (meals.length) {
+      meals.forEach(meal => {
+        html += `
+          <div class="meal-item" data-id="${meal.idMeal}">
+            <div class="meal-img">
+              <img src="${meal.strMealThumb}" alt="food">
+            </div>
+            <div class="meal-name">
+              <h3>${meal.strMeal}</h3>
+              <a href="#" class="recipe-btn">Get Recipe</a>
+            </div>
+          </div>
+        `;
+      });
+      mealList.classList.remove('notFound');
+    } else {
+      html = "Sorry, we didn't find any meal!";
+      mealList.classList.add('notFound');
+    }
+    mealList.innerHTML = html;
+  });
 }
-
 
 // get recipe of the meal
 function getMealRecipe(e){
