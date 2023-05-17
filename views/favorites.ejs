@@ -53,75 +53,96 @@
       }
     }
   </style>
- <div style="height: 120px;"></div>
- <div class="container" id="favoritesContainer">
-   <!-- The favorite cards will be inserted here -->
- </div>
- <div style="height: 50px;"></div>
+  <div style="height: 120px;"></div>
+  <div class="container" id="favoritesContainer">
+    <!-- The favorite cards will be inserted here -->
+  </div>
+  <div style="height: 50px;"></div>
 
- <script>
-   const favoritesContainer = document.getElementById('favoritesContainer');
+  <script>
+    const favoritesContainer = document.getElementById('favoritesContainer');
 
-   // Fetch the user's favorites
-   fetch('/api/favorites')
-     .then(response => response.json())
-     .then(data => {
-       if (data.success && data.favorites.length > 0) {
-         data.favorites.forEach(recipeName => {
-           fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`)
-             .then(response => response.json())
-             .then(data => {
-               const meal = data.meals[0];
-               const card = document.createElement('div');
-               card.className = 'card d-flex flex-row align-items-stretch mb-3';
-               card.innerHTML = `
-                 <div class="image-container">    
-                   <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="card-img">
-                 </div>
-                 <div class="card-body d-flex flex-column position-relative">
-                   <button type="button" class="btn btn-outline-danger heart-btn active" data-recipe-name="${meal.strMeal}">
-                     <i class="bi bi-heart"></i>
-                   </button>
-                   <h3 class="card-title">${meal.strMeal}</h3>
-                   <p class="card-text">${meal.strInstructions}<br/><a href="${meal.strYoutube}" target="_blank">Watch Video</a></p>
-                 </div>
-               `;
-               favoritesContainer.appendChild(card);
-             });
-         });
-       } else {
-         favoritesContainer.innerText = 'No favorite recipes found.';
-       }
-     });
+    // Fetch the user's favorites
+    fetch('/api/favorites')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && data.favorites.length > 0) {
+          data.favorites.forEach(recipeName => {
+            fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then(data => {
+                if (data.meals && data.meals.length > 0) {
+                  const meal = data.meals[0];
+                  const card = document.createElement('div');
+                  card.className = 'card d-flex flex-row align-items-stretch mb-3';
+                  card.innerHTML = `
+        <div class="image-container">    
+          <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="card-img">
+        </div>
+        <div class="card-body d-flex flex-column position-relative">
+          <button type="button" class="btn btn-outline-danger heart-btn active" data-recipe-name="${meal.strMeal}">
+            <i class="bi bi-heart"></i>
+          </button>
+          <h3 class="card-title">${meal.strMeal}</h3>
+          <p class="card-text">${meal.strInstructions}<br/><a href="${meal.strYoutube}" target="_blank">Watch Video</a></p>
+        </div>
+      `;
+                  favoritesContainer.appendChild(card);
+                }
+              })
+              .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+              });
 
-   // Listen for heart button clicks
-   favoritesContainer.addEventListener('click', (e) => {
-     if (e.target.closest('.heart-btn')) {
-       const heartBtn = e.target.closest('.heart-btn');
-       const recipeName = heartBtn.dataset.recipeName;
-       fetch('/remove-favorite', {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-         },
-         body: JSON.stringify({ recipeName }),
-       })
-         .then(response => response.json())
-         .then(data => {
-           if (data.success) {
-             heartBtn.classList.remove('active');
-             // Force a reflow of the heart button
-             void heartBtn.offsetHeight;
-           }
-         });
-     }
-   });
+          });
+        } else {
+          favoritesContainer.innerText = 'No favorite recipes found.';
+        }
+      });
 
-   // Listen for card text clicks
-   favoritesContainer.addEventListener('click', (e) => {
-     if (e.target.classList.contains('card-text')) {
-       e.target.classList.toggle('expanded');
-     }
-   });
- </script>
+    // Listen for heart button clicks
+    favoritesContainer.addEventListener('click', (e) => {
+      if (e.target.closest('.heart-btn')) {
+        const heartBtn = e.target.closest('.heart-btn');
+        const recipeName = heartBtn.dataset.recipeName;
+        fetch('/remove-favorite', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ recipeName }),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.success) {
+              heartBtn.classList.remove('active');
+              // Force a reflow of the heart button
+              void heartBtn.offsetHeight;
+              // Remove the card from the DOM
+              heartBtn.closest('.card').remove();
+            }
+          })
+          .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+          });
+      }
+    });
+
+    // Listen for card text clicks
+    favoritesContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('card-text')) {
+        e.target.classList.toggle('expanded');
+      }
+    });
+  </script>
   <%- include("templates/footer") %>

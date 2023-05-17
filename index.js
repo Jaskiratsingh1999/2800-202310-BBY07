@@ -164,8 +164,8 @@ app.get("/login", (req, res) => {
 app.get('/search', (req, res) => {
   res.render("search");
 });
+
 /* Section handling code for forgotten password  */
-//////////////////////////////////////////////////
 const { google } = require('googleapis');
 
 async function updateUserResetToken(email, resetToken) {
@@ -201,10 +201,8 @@ app.get('/forgot-password', async (req, res) => {
     console.log('Password reset email sent successfully');
   } catch (error) {
     console.error('Error sending password reset email:', error);
-    // Handle the error appropriately
   }
 
-  // Redirect the user to a password reset confirmation page
   res.redirect('/password-reset-confirmation');
 });
 
@@ -226,11 +224,10 @@ app.post('/reset-password', async (req, res) => {
 
     await userCollection.updateOne({ _id: user._id }, { $set: { password: hashedPassword, resetToken: '' } });
 
-    // Password updated successfully, redirect to password reset success page
     return res.redirect('/password-reset-success');
   } catch (error) {
     console.error('Error updating password:', error);
-    // Handle the error appropriately
+y
     return res.status(500).send('An error occurred while updating the password.');
   }
 });
@@ -250,7 +247,7 @@ app.get('/oauth2callback', async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
     clientId,
     clientSecret,
-    'http://localhost:3000/oauth2callback'  // <-- Make sure this matches the URI you set in Google Cloud Console
+    'http://localhost:3000/oauth2callback'  
   );
 
   const { code } = req.query;
@@ -259,9 +256,6 @@ app.get('/oauth2callback', async (req, res) => {
     try {
       const { tokens } = await oauth2Client.getToken(code);
       oauth2Client.setCredentials(tokens);
-
-      // Now the oauth2Client is authorized and you can use it to make requests
-      // You could also save the tokens for later use
 
       res.send('Successfully authenticated');
     } catch (error) {
@@ -272,8 +266,6 @@ app.get('/oauth2callback', async (req, res) => {
   }
 });
 
-
-//////////////////////////////////////////////////////
 /* Section handling code for forgotten password END */
 
 app.post('/loggingin', async (req, res) => {
@@ -343,10 +335,10 @@ app.get('/favorites', (req, res) => {
 });
 
 /* CODE SECTION FOR HANDLING FAVORITES FUNCTION ON RECIPES */
-////////////////////////////////////////////////////////////////
+
 app.get('/api/favorites', async (req, res) => {
-  if (!req.session._id) {
-    return res.status(400).send({ success: false, error: 'Missing user ID in session' });
+  if (!req.session.email) {
+    return res.status(400).send({ success: false, error: 'Missing user Email in session' });
   }
 
   try {
@@ -366,8 +358,8 @@ app.get('/api/favorites', async (req, res) => {
 });
 
 app.post('/remove-favorite', async (req, res) => {
-  if (!req.session._id) {
-    return res.status(400).send({ success: false, error: 'Missing user ID in session' });
+  if (!req.session.email) {
+    return res.status(400).send({ success: false, error: 'Missing user email in session' });
   }
 
   const { recipeName } = req.body;
@@ -384,8 +376,6 @@ app.post('/remove-favorite', async (req, res) => {
     res.status(500).send({ success: false, error: err.toString() });
   }
 });
-
-
 
 app.post('/add-favorite', async (req, res) => {
   console.log(req.session.email);
@@ -416,7 +406,6 @@ app.post('/add-favorite', async (req, res) => {
   }
 });
 
-
 app.get('/is-favorite', async (req, res) => {
   console.log('Hit /is-favorite route');
   const recipeName = req.query.recipeName;
@@ -446,12 +435,7 @@ app.get('/is-favorite', async (req, res) => {
   }
 });
 
-
-
-
-
 /* CODE SECTION FOR HANDLING FAVORITES FUNCTION ON RECIPES END */
-////////////////////////////////////////////////////////////////
 
 app.get('/help', (req, res) => {
   res.render("help");
