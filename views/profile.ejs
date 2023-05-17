@@ -10,13 +10,13 @@
               <img src="default.jpg" class="card-img-top" alt="Default Profile Picture">
               <% } %>
                 <div class="card-body">
-                  <h5 class="card-title">
+                  <h5 class="card-title fs-2">
                     <%= user.username %>
                   </h5>
-                  <p class="card-text"><strong>Email:</strong>
+                  <p class="card-text fs-4"><strong>Email:</strong>
                     <%= user.email %>
                   </p>
-                  <p class="card-text"><strong>Dietary Preferences:</strong>
+                  <p class="card-text fs-4"><strong>Dietary Preferences:</strong>
                     <%= user.dietary_preference %>
                   </p>
                 </div>
@@ -25,9 +25,9 @@
       <div class="col-md-9">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Change Password</h5>
+            <h5 class="card-title fs-3">Change Password</h5>
             <form action="/profile/password" method="POST">
-              <div class="form-group">
+              <div class="form-group fs-4">
                 <label for="password">New Password</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="********">
               </div>
@@ -35,13 +35,13 @@
             </form>
           </div>
         </div>
-        <div class="card mt-4">
+        <div class="card mt-4 mb-5">
           <div class="card-body">
-            <h5 class="card-title">Update Profile Picture</h5>
+            <h5 class="card-title fs-3">Update Profile Picture</h5>
             <form action="/profile/image" method="POST" enctype="multipart/form-data">
-              <div class="form-group">
+              <div class="form-group fs-4">
                 <label for="profileImage">Choose Profile Picture</label>
-                <input type="file" class="form-control-file" id="profileImage" name="profileImage">
+                <input type="file" class="form-control-file mt-2" id="profileImage" name="profileImage">
               </div>
               <button type="submit" class="btn btn-primary">Upload</button>
             </form>
@@ -50,8 +50,5 @@
       </div>
     </div>
   </div>
-
-  <div style="height: 60px;"></div>
-
 
   <%- include("templates/footer") %>
