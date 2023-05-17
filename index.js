@@ -344,6 +344,49 @@ app.get('/favorites', (req, res) => {
 
 /* CODE SECTION FOR HANDLING FAVORITES FUNCTION ON RECIPES */
 ////////////////////////////////////////////////////////////////
+app.get('/api/favorites', async (req, res) => {
+  if (!req.session._id) {
+    return res.status(400).send({ success: false, error: 'Missing user ID in session' });
+  }
+
+  try {
+    const user = await userCollection.findOne(
+      { email: req.session.email }
+    );
+
+    if (!user) {
+      return res.status(400).send({ success: false, error: 'No user found with the provided ID' });
+    }
+
+    res.send({ success: true, favorites: user.favorites });
+  } catch (err) {
+    console.error("Error fetching favorites: ", err);
+    res.status(500).send({ success: false, error: err.toString() });
+  }
+});
+
+app.post('/remove-favorite', async (req, res) => {
+  if (!req.session._id) {
+    return res.status(400).send({ success: false, error: 'Missing user ID in session' });
+  }
+
+  const { recipeName } = req.body;
+
+  try {
+    await userCollection.updateOne(
+      { email: req.session.email },
+      { $pull: { favorites: recipeName } }
+    );
+
+    res.send({ success: true });
+  } catch (err) {
+    console.error("Error removing favorite: ", err);
+    res.status(500).send({ success: false, error: err.toString() });
+  }
+});
+
+
+
 app.post('/add-favorite', async (req, res) => {
   console.log(req.session.email);
   const recipeName = req.body.recipeName;
