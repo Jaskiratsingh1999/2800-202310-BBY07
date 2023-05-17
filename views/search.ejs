@@ -1,5 +1,5 @@
 <%- include("templates/headerSearch") %>
-<!-- <br />
+  <!-- <br />
 <br />
 <br />
 <br />
@@ -10,40 +10,59 @@
 <br />
 <br />
 <br /> -->
+  <style>
+    .favorite-icon {
+      color: white;
+      cursor: pointer;
+      padding: 5px;
+    }
 
-<div class = "container">
-  <div class = "meal-wrapper">
-    <div class = "meal-search">
-      <h2 class = "title">Find Meals For Your Ingredients</h2>
-      <blockquote>Real food doesn't have ingredients, real food is ingredients.<br>
-        <cite>- Jamie Oliver</cite>
-      </blockquote>
+    .favorite-icon.favorite {
+      color: red;
+      padding: 5px;
+    }
 
-      <div class = "meal-search-box">
-        <input type = "text" class = "search-control" placeholder="Enter an ingredient" id = "search-input">
-        <button type = "submit" class = "search-btn btn" id = "search-btn">
-          <i class = "fas fa-search"></i>
+    .favorite-container {
+      display: block;
+      margin-bottom: 16px;
+      margin-top: -10px;
+    }
+  </style>
+
+
+  <div class="container">
+    <div class="meal-wrapper">
+      <div class="meal-search">
+        <h2 class="title">Find Meals For Your Ingredients</h2>
+        <blockquote>Real food doesn't have ingredients, real food is ingredients.<br>
+          <cite>- Jamie Oliver</cite>
+        </blockquote>
+
+        <div class="meal-search-box">
+          <input type="text" class="search-control" placeholder="Enter an ingredient" id="search-input">
+          <button type="submit" class="search-btn btn" id="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="meal-result">
+        <h2 class="title">Your Search Results:</h2>
+        <div id="meal">
+
+        </div>
+      </div>
+
+
+      <div class="meal-details">
+        <!-- recipe close btn -->
+        <button type="button" class="btn recipe-close-btn" id="recipe-close-btn">
+          <i class="fas fa-times"></i>
         </button>
-      </div>
-    </div>
 
-    <div class = "meal-result">
-      <h2 class = "title">Your Search Results:</h2>
-      <div id= "meal">
-        
-      </div>
-    </div>
-
-
-    <div class = "meal-details">
-      <!-- recipe close btn -->
-      <button type = "button" class = "btn recipe-close-btn" id = "recipe-close-btn">
-        <i class = "fas fa-times"></i>
-      </button>
-
-      <!-- meal content -->
-      <div class = "meal-details-content">
-        <!-- <h2 class = "recipe-title">Meals Name Here</h2>
+        <!-- meal content -->
+        <div class="meal-details-content">
+          <!-- <h2 class = "recipe-title">Meals Name Here</h2>
         <p class = "recipe-category">Category Name</p>
         <div class = "recipe-instruct">
           <h3>Instructions:</h3>
@@ -56,25 +75,25 @@
         <div class = "recipe-link">
           <a href = "#" target = "_blank">Watch Video</a>
         </div> -->
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
 
-<script>
-const searchBtn = document.getElementById('search-btn');
-const mealList = document.getElementById('meal');
-const mealDetailsContent = document.querySelector('.meal-details-content');
-const recipeCloseBtn = document.getElementById('recipe-close-btn');
+  <script>
+    const searchBtn = document.getElementById('search-btn');
+    const mealList = document.getElementById('meal');
+    const mealDetailsContent = document.querySelector('.meal-details-content');
+    const recipeCloseBtn = document.getElementById('recipe-close-btn');
 
-// event listeners
-searchBtn.addEventListener('click', getMealList);
-mealList.addEventListener('click', getMealRecipe);
-recipeCloseBtn.addEventListener('click', () => {
-    mealDetailsContent.parentElement.classList.remove('showRecipe');
-});
+    // event listeners
+    searchBtn.addEventListener('click', getMealList);
+    mealList.addEventListener('click', getMealRecipe);
+    recipeCloseBtn.addEventListener('click', () => {
+      mealDetailsContent.parentElement.classList.remove('showRecipe');
+    });
 
 
 // get meal list that matches with the ingredients, recipe name, or area
@@ -122,17 +141,20 @@ function getMealRecipe(e){
     if(e.target.classList.contains('recipe-btn')){
         let mealItem = e.target.parentElement.parentElement;
         fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem.dataset.id}`)
-        .then(response => response.json())
-        .then(data => mealRecipeModal(data.meals));
+          .then(response => response.json())
+          .then(data => mealRecipeModal(data.meals));
+      }
     }
-}
 
-// create a modal
-function mealRecipeModal(meal){
-    console.log(meal);
-    meal = meal[0];
-    let html = `
+    // create a modal
+    function mealRecipeModal(meal) {
+      console.log(meal);
+      meal = meal[0];
+      let html = `
         <h2 class = "recipe-title">${meal.strMeal}</h2>
+          <div class="favorite-container">
+            <i class="fas fa-heart favorite-icon"></i>
+          </div
         <p class = "recipe-category">${meal.strCategory}</p>
         <div class = "recipe-instruct">
             <h3>Instructions:</h3>
@@ -145,9 +167,36 @@ function mealRecipeModal(meal){
             <a href = "${meal.strYoutube}" target = "_blank">Watch Video</a>
         </div>
     `;
-    mealDetailsContent.innerHTML = html;
-    mealDetailsContent.parentElement.classList.add('showRecipe');
-}
-</script>
+      mealDetailsContent.innerHTML = html;
+      mealDetailsContent.parentElement.classList.add('showRecipe');
 
-<%- include("templates/footer") %>
+      const favoriteIcon = document.querySelector('.favorite-icon');
+
+      // Check if the recipe is a favorite
+      fetch(`/is-favorite?recipeName=${encodeURIComponent(meal.strMeal)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success && data.isFavorite) {
+            favoriteIcon.classList.add('favorite');
+          }
+        });
+
+      favoriteIcon.addEventListener('click', function () {
+        fetch('/add-favorite', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ recipeName: meal.strMeal }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              this.classList.add('favorite');
+            }
+          });
+      });
+    }
+  </script>
+
+  <%- include("templates/footer") %>
