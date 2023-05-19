@@ -1,4 +1,3 @@
-
 require("./utils.js");
 
 require('dotenv').config();
@@ -10,21 +9,28 @@ const saltRounds = 12;
 
 const nodemailer = require('nodemailer');
 
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const refreshToken = process.env.REFRESH_TOKEN;
+const accessToken = process.env.ACCESS_TOKEN;
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     type: 'OAuth2',
     user: 'meal.geniebby07@gmail.com',
-    clientId: '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
-    clientSecret: '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',
-    refreshToken: '1//04f0AR37Ibo_dCgYIARAAGAQSNwF-L9Ir_GZm9C7mXcz2xqzF_8cz8Acedkdg5YDhLz7sEY_ca7yrZ6afXMTbRE3Hfm8jNsJoa6c',
-    accessToken: 'ya29.a0AWY7CklNOpvYfMK3mu7bY00NWs1fNRU__jByj8FBii_xdbw3Xq07uT94wr2zhokY4bOU4BdgsgkAnnvOpF8cYMLaGeRV4EUwxdCv9SGpKHLXR_t_bgT6OGEXvxlt8phqWpAuZ-h1gmOCHACUVCGE8W9hW6MDaCgYKAc0SARMSFQG1tDrpxUNkrC5enxl0UMJkQFmRsA0163'
+    clientId: clientId,
+    clientSecret: clientSecret,
+    refreshToken: refreshToken,
+    accessToken: accessToken
   },
 });
+
 
 const port = process.env.PORT || 3000;
 
 const app = express();
+app.use(express.json());
 
 const Joi = require("joi");
 
@@ -54,6 +60,7 @@ var mongoStore = MongoStore.create({
     secret: mongodb_session_secret
   }
 })
+
 
 app.use(session({
   secret: node_session_secret,
@@ -141,7 +148,7 @@ app.post('/signupSubmit', async (req, res) => {
 
   var hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  await userCollection.insertOne({ username: username, email: email, password: hashedPassword, dietary_preference: dietaryPref, resetToken: "" });
+  await userCollection.insertOne({ username: username, email: email, password: hashedPassword, dietary_preference: dietaryPref, resetToken: "", favorites: [] });
   req.session.authenticated = true;
   req.session.email = email;
   req.session.username = username;
@@ -153,11 +160,8 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.get('/search', (req, res) => {
-  res.render("search");
-});
+
 /* Section handling code for forgotten password  */
-//////////////////////////////////////////////////
 const { google } = require('googleapis');
 
 async function updateUserResetToken(email, resetToken) {
@@ -193,10 +197,8 @@ app.get('/forgot-password', async (req, res) => {
     console.log('Password reset email sent successfully');
   } catch (error) {
     console.error('Error sending password reset email:', error);
-    // Handle the error appropriately
   }
 
-  // Redirect the user to a password reset confirmation page
   res.redirect('/password-reset-confirmation');
 });
 
@@ -218,11 +220,10 @@ app.post('/reset-password', async (req, res) => {
 
     await userCollection.updateOne({ _id: user._id }, { $set: { password: hashedPassword, resetToken: '' } });
 
-    // Password updated successfully, redirect to password reset success page
     return res.redirect('/password-reset-success');
   } catch (error) {
     console.error('Error updating password:', error);
-    // Handle the error appropriately
+y
     return res.status(500).send('An error occurred while updating the password.');
   }
 });
@@ -238,19 +239,11 @@ app.get('/password-reset-success', (req, res) => {
   res.render('password-reset-success');
 });
 
-
-
-// app.get('/oauth2callback', async (req, res) => {
-//   const oauth2Client = new google.auth.OAuth2(
-//     '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
-//     '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',
-//     'https://localhost:3000/oauth2callback'
-//   );
 app.get('/oauth2callback', async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
-    '910604869949-4cdlptmrhs1c9jb5c6h2rqf30k5gfvbd.apps.googleusercontent.com',
-    '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',
-    'http://localhost:3000/oauth2callback'  // <-- Make sure this matches the URI you set in Google Cloud Console
+    clientId,
+    clientSecret,
+    'http://localhost:3000/oauth2callback'  
   );
 
   const { code } = req.query;
@@ -259,9 +252,6 @@ app.get('/oauth2callback', async (req, res) => {
     try {
       const { tokens } = await oauth2Client.getToken(code);
       oauth2Client.setCredentials(tokens);
-
-      // Now the oauth2Client is authorized and you can use it to make requests
-      // You could also save the tokens for later use
 
       res.send('Successfully authenticated');
     } catch (error) {
@@ -272,8 +262,6 @@ app.get('/oauth2callback', async (req, res) => {
   }
 });
 
-
-//////////////////////////////////////////////////////
 /* Section handling code for forgotten password END */
 
 app.post('/loggingin', async (req, res) => {
@@ -305,6 +293,7 @@ app.post('/loggingin', async (req, res) => {
         req.session.email = email;
         req.session.username = result[0].username;
         req.session.user_type = result[0].user_type;
+        req.session._id = result[0]._id;
         req.session.cookie.maxAge = time;
         res.redirect('/members');
         return;
@@ -340,6 +329,109 @@ app.get('/aboutUs', (req, res) => {
 app.get('/favorites', (req, res) => {
   res.render("favorites");
 });
+
+/* CODE SECTION FOR HANDLING FAVORITES FUNCTION ON RECIPES */
+
+app.get('/api/favorites', async (req, res) => {
+  if (!req.session.email) {
+    return res.status(400).send({ success: false, error: 'Missing user Email in session' });
+  }
+
+  try {
+    const user = await userCollection.findOne(
+      { email: req.session.email }
+    );
+
+    if (!user) {
+      return res.status(400).send({ success: false, error: 'No user found with the provided ID' });
+    }
+
+    res.send({ success: true, favorites: user.favorites });
+  } catch (err) {
+    console.error("Error fetching favorites: ", err);
+    res.status(500).send({ success: false, error: err.toString() });
+  }
+});
+
+app.post('/remove-favorite', async (req, res) => {
+  if (!req.session.email) {
+    return res.status(400).send({ success: false, error: 'Missing user email in session' });
+  }
+
+  const { recipeName } = req.body;
+
+  try {
+    await userCollection.updateOne(
+      { email: req.session.email },
+      { $pull: { favorites: recipeName } }
+    );
+
+    res.send({ success: true });
+  } catch (err) {
+    console.error("Error removing favorite: ", err);
+    res.status(500).send({ success: false, error: err.toString() });
+  }
+});
+
+app.post('/add-favorite', async (req, res) => {
+  console.log(req.session.email);
+  const recipeName = req.body.recipeName;
+  console.log(recipeName);
+  if (!recipeName) {
+    return res.status(400).send({ success: false, error: 'Missing recipeName in request body' });
+  }
+
+  if (!req.session.email) {
+    return res.status(400).send({ success: false, error: 'Missing user email in session' });
+  }
+
+  try {
+    const result = await userCollection.updateOne(
+      { email: req.session.email }, 
+      { $addToSet: { favorites: recipeName } }
+    );
+
+    if (result.modifiedCount == 0) {
+      return res.status(400).send({ success: false, error: 'No user found with the provided ID' });
+    }
+
+    res.send({ success: true });
+  } catch(err) {
+    console.error("Error updating favorite: ", err);
+    res.status(500).send({ success: false, error: err.toString() });
+  }
+});
+
+app.get('/is-favorite', async (req, res) => {
+  console.log('Hit /is-favorite route');
+  const recipeName = req.query.recipeName;
+  console.log(recipeName);
+  if (!recipeName) {
+    return res.status(400).send({ success: false, error: 'Missing recipeName in query parameters' });
+  }
+
+  if (!req.session._id) {
+    return res.status(400).send({ success: false, error: 'Missing user ID in session' });
+  }
+
+  try {
+    const user = await userCollection.findOne(
+      { email: req.session.email } 
+    );
+
+    if (!user) {
+      return res.status(400).send({ success: false, error: 'No user found with the provided ID' });
+    }
+
+    const isFavorite = user.favorites.includes(recipeName);
+    res.send({ success: true, isFavorite });
+  } catch(err) {
+    console.error("Error checking favorite: ", err);
+    res.status(500).send({ success: false, error: err.toString() });
+  }
+});
+
+/* CODE SECTION FOR HANDLING FAVORITES FUNCTION ON RECIPES END */
 
 app.get('/help', (req, res) => {
   res.render("help");

@@ -1,126 +1,181 @@
 <%- include("templates/afterLoginHeader") %>
-      <div style="height: 150px;"></div>
-      <div class="faq-container mx-auto my-5">
-        <h1 class="mb-5 text-primary text-center" style="font-size: 36pt; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Frequently Asked Questions</h1>
-        <div class="faq-question">
-            <button class="faq-toggle">What is the Meal Genie app, and how does it work?</button>
-            <div class="faq-answer">
-                <p>Meal Genie is a personalized recipe app that uses advanced algorithms and AI to provide health-conscious foodies with new recipe suggestions based on their dietary preferences and cooking skills. The app helps users make informed and healthy food choices by providing tailored recipe options and ingredient suggestions.</p>
-            </div>
-        </div>
-        <div class="faq-question">
-            <button class="faq-toggle">Can I customize my recipes based on my dietary restrictions and preferences?</button>
-            <div class="faq-answer">
-                <p>Yes, Meal Genie allows users to customize their recipe suggestions based on their dietary preferences and restrictions, such as vegan, gluten-free, or low-carb.</p>
-            </div>
-        </div>
-        <div class="faq-question">
-            <button class="faq-toggle">Is Meal Genie free to use or does it require a subscription fee?</button>
-            <div class="faq-answer">
-                <p>Yes, Meal Genie is completely free to use and doesn't require any subscription. Users can download the app for free and access all of its features, including personalized recipe suggestions without any additional cost.</p>
-            </div>
-        </div>
-        <div class="faq-question">
-            <button class="faq-toggle">Are the recipes provided by the Meal Genie app easy to follow?</button>
-            <div class="faq-answer">
-                <p>Yes, the recipes provided by the Meal Genie app are easy to follow, and they include step-by-step instructions and photos to guide you through the cooking process.</p>
-            </div>
-        </div>
-        <div class="faq-question">
-            <button class="faq-toggle">Can users swap out ingredients for certain recipes?</button>
-            <div class="faq-answer">
-                <p>Yes, users can swap out ingredients for certain recipes. Meal Genie provides alternative ingredients and suggestions for substitutes to accommodate specific dietary needs and preferences.</p>
-            </div>
-        </div>
-    </div>
-    
-      <div style="height: 160px;"></div>
 
-
-</div>
 <style>
-.faq-container {
-  margin-top: 20px;
-}
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url("loginPage.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(2px); /* Adjust the blur radius as needed */
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
 
-.faq-question {
-  margin-bottom: 10px;
-  background-color: transparent;
-  font-size: 18px;
-  color: #fff;
-}
+  .faq-title {
+    background-color: rgba(
+      0,
+      255,
+      255,
+      0.7
+    ); /* Transparent light blue background color */
+    font-family: cursive;
+    padding: 1rem;
+    border-radius: 10px;
+    color: #0e0101; /* White text color */
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3); /* Slight text shadow */
+  }
+</style>
+<div style="height: 150px"></div>
+<div class="container-fluid my-5">
+  <h2 class="mb-5">
+    <span class="faq-title">Frequently Asked Questions</span>
+  </h2>
+  <div class="accordion" id="faq-accordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq1">
+        <button
+          class="accordion-button collapsed fs-4"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse1"
+          aria-expanded="false"
+          aria-controls="collapse1"
+        >
+          What is the Meal Genie app, and how does it work?
+        </button>
+      </h2>
+      <div
+        id="collapse1"
+        class="accordion-collapse collapse fs-5"
+        aria-labelledby="faq1"
+        data-bs-parent="#faq-accordion"
+      >
+        <div class="accordion-body">
+          Meal Genie is a personalized recipe app that uses advanced algorithms
+          and AI to provide health-conscious foodies with new recipe suggestions
+          based on their dietary preferences and cooking skills. The app helps
+          users make informed and healthy food choices by providing tailored
+          recipe options and ingredient suggestions.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq2">
+        <button
+          class="accordion-button collapsed fs-4"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse2"
+          aria-expanded="false"
+          aria-controls="collapse2"
+        >
+          Can I customize my recipes based on my dietary restrictions and
+          preferences?
+        </button>
+      </h2>
+      <div
+        id="collapse2"
+        class="accordion-collapse collapse fs-5"
+        aria-labelledby="faq2"
+        data-bs-parent="#faq-accordion"
+      >
+        <div class="accordion-body">
+          Yes, Meal Genie allows users to customize their recipe suggestions
+          based on their dietary preferences and restrictions, such as vegan,
+          gluten-free, or low-carb.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq3">
+        <button
+          class="accordion-button collapsed fs-4"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse3"
+          aria-expanded="false"
+          aria-controls="collapse3"
+        >
+          Is Meal Genie free to use or does it require a subscription fee?
+        </button>
+      </h2>
+      <div
+        id="collapse3"
+        class="accordion-collapse collapse fs-5"
+        aria-labelledby="faq3"
+        data-bs-parent="#faq-accordion"
+      >
+        <div class="accordion-body">
+          Yes, Meal Genie is completely free to use and doesn't require any
+          subscription. Users can download the app for free and access all of
+          its features, including personalized recipe suggestions without any
+          additional cost.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq4">
+        <button
+          class="accordion-button collapsed fs-4"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse4"
+          aria-expanded="false"
+          aria-controls="collapse4"
+        >
+          Are the recipes provided by the Meal Genie app easy to follow?
+        </button>
+      </h2>
+      <div
+        id="collapse4"
+        class="accordion-collapse collapse fs-5"
+        aria-labelledby="faq4"
+        data-bs-parent="#faq-accordion"
+      >
+        <div class="accordion-body">
+          Yes, the recipes provided by the Meal Genie app are easy to follow,
+          and they include step-by-step instructions and photos to guide you
+          through the cooking process.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="faq5">
+        <button
+          class="accordion-button collapsed fs-4"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapse5"
+          aria-expanded="false"
+          aria-controls="collapse5"
+        >
+          How does Meal Genie ensure the accuracy of its ingredient suggestions?
+        </button>
+      </h2>
+      <div
+        id="collapse5"
+        class="accordion-collapse collapse fs-5"
+        aria-labelledby="faq5"
+        data-bs-parent="#faq-accordion"
+      >
+        <div class="accordion-body">
+          Meal Genie uses a combination of user feedback, nutrition data, and
+          machine learning algorithms to suggest ingredients that are both
+          healthy and appropriate for the selected dietary preferences. The app
+          also allows users to add and remove ingredients from the suggested
+          recipes based on their individual preferences and taste.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-.faq-toggle {
-  background-color: transparent;
-  border: none;
-  border-radius: 5px;
-  color: #040000;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 10px;
-  text-align: left;
-  width: 100%;
-}
-
-.faq-answer {
-  background-color: transparent;
-  border-radius: 5px;
-  color: #c21010;
-  display: none;
-  margin-top: 5px;
-  padding: 0 10px;
-  font-size: 16px;
-}
-
-.faq-answer p {
-  margin: 0;
-}
-
-.faq-toggle:focus {
-  outline: none;
-}
-
-.faq-toggle.active {
-  background-color: #fff;
-  color: #333;
-}
-
-.faq-toggle.active + .faq-answer {
-  display: block;
-  background-color: #fff;
-}
-
-
-
-
-    body {
-      background-image: url(/im16.jpeg);
-      background-size: cover;
-      background-position: center;
-      backdrop-filter: blur(5px);
-    }
-  </style>
-  <script>
-    // Get all the question buttons
-var faqToggles = document.getElementsByClassName("faq-toggle");
-
-// Add event listeners to each button
-for (var i = 0; i < faqToggles.length; i++) {
-  faqToggles[i].addEventListener("click", function() {
-    // Toggle the active class on the button
-    this.classList.toggle("active");
-    // Toggle the display property of the answer div
-    var faqAnswer = this.nextElementSibling;
-    if (faqAnswer.style.display === "block") {
-      faqAnswer.style.display = "none";
-    } else {
-      faqAnswer.style.display = "block";
-    }
-  });
-}
-
-  </script>
-<%- include("templates/footer") %> 
-
-
+<%- include("templates/afterLoginFooter") %>

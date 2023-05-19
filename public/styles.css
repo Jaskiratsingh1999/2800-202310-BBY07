@@ -526,6 +526,8 @@ body{
 
     .menu-items{
         padding-top: 80px;
+        padding-right: 50px;
+        padding-left: 50px;
         height: 100vh;
         max-width: 250px;
         background-color: #ffffff;
