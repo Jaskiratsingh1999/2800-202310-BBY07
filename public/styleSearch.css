@@ -480,6 +480,8 @@ body::after {
 
     .menu-items{
         padding-top: 80px;
+        padding-right: 50px;
+        padding-left: 50px;
         height: 100vh;
         max-width: 250px;
         background-color: #ffffff;
@@ -601,8 +603,9 @@ body::after {
     font-size: 24px;
     text-align: center;
     padding: 10px;
-    background-color: blanchedalmond;
-    color: rgb(187, 15, 15);
+    border-radius: 30%;
+    background-color: rgba(66, 135, 245, 0.8);
+    color: #ffffff;
     display: none;
     animation: fade-in 1s ease-in-out;
   }

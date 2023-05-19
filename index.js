@@ -1,4 +1,3 @@
-
 require("./utils.js");
 
 require('dotenv').config();
@@ -160,7 +159,6 @@ app.post('/signupSubmit', async (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login");
 });
-
 
 
 /* Section handling code for forgotten password  */
