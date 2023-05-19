@@ -1,217 +1,205 @@
-<%- include("templates/afterLoginHeader") %>
-<section class="showcase-area" id="Showcase">
-  <div class="showcase-container">
-     <h1 class="main-title">EAT HEALTHY FOOD</h1>
-     <p>Eat Healthy Food , It is good for health</p>
-     <a href="search" class="btn btn-primary">Search</a>
+<%- include("templates/headerSearch") %>
+  <div style="height: 50px;"></div>
+  <div class="container2_2">
+    <div class="gift-box" onclick="showWelcomeMessage()"></div>
+    <div class="welcome-message" id="welcomeMessage">Let me Open the Chambers for you :) </div>
   </div>
-  
-</section>
-
-<section class="aboutus" id="About">
-  <div class="aboutbox container">
-      <div class="about-text">
-          <h4>About Us</h4>
-          <h1>We've been Making Healthy Food For Last 10 Years</h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis excepturi, dolore vitae nostrum magnam, cupiditate repudiandae, saepe iusto eius Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem magni, similique itaque saepe illum labore. unde consequuntur eligendi?</p>
-      </div>
-      <div class="about-img">
-          <img src="about-photo.jpg" alt="strawberry">
-      </div>
-  </div>
- 
-</section>
-
-<section id="Food">
+  <div style="height: 50px;"></div>
   <div class="container">
-      <div class="textfood"><p>Types Of Foods</p></div>
-      <div class="foodbox">
-          <div class="food-type fruits">
-              <div class="img-container">
-                  <img src="food1.jpg" alt="">
-                  <div class="food-content">
-                      <h1>FRUITS</h1>
-                      <a href="" class="btn btn-primary">Learn More</a>
-                  </div>
-              </div>
-
-
+    <div class="meal-wrapper">
+      <div class="meal-search">
+        <h2 class="title">Find Meals For Your Ingredients</h2>
+        <p style="font-size: 15px;">
+          Meal Genie grants wishes, like a dream machine!"
+        </p>
+        <div class="meal-search-box">
+          <input type="text" class="search-control" placeholder="Enter an ingredient" id="search-input">
+          <button type="submit" class="search-btn btn" id="search-btn">
+            <i class="fa fa-search search-icon"></i>
+          </button>
+        </div>
+        <div class="meal-result">
+          <h2 class="title">Your Search Results:</h2>
+          <div id="meal">
           </div>
-          <div class="food-type vegetable">
-              <div class="img-container">
-                  <img src="food2.jpg" alt="">
-                  <div class="food-content">
-                      <h1>VEGETABLES</h1>
-                      <a href="" class="btn btn-primary">Learn More</a>
-                  </div>
-              </div>
-
-
+        </div>
+        <div class="meal-details">
+          <!-- recipe close btn -->
+          <button type="button" class="btn recipe-close-btn" id="recipe-close-btn">
+            <i class="fas fa-times"></i>
+          </button>
+          <!-- meal content -->
+          <div class="meal-details-content">
           </div>
-          <div class="food-type cereals">
-              <div class="img-container">
-                  <img src="food3.jpg" alt="">
-                  <div class="food-content">
-                      <h1>CEREALS</h1>
-                      <a href="" class="btn btn-primary">Learn More</a>
-                  </div>
-              </div>
-
-
-          </div>
+        </div>
       </div>
+    </div>
+    <script>
+      // * Scripting for the easter egg animation STARTS here
+      function showWelcomeMessage() {
+        var welcomeMessage = document.getElementById('welcomeMessage');
+        var container = document.querySelector('.container2_2');
+        container.classList.add('blurred-background'); // Add the blurred background to the container
 
-  </div>
-  
- 
-</section>
+        if (welcomeMessage.style.display === 'none') {
+          welcomeMessage.style.display = 'block';
+          setTimeout(removeElements, 3000); // Remove elements after 5 seconds
+        } else {
+          welcomeMessage.style.display = 'none';
+        }
+      }
 
-<section id="Food-Menu">
-  <h2 class="food-menu-heading">FOOD MENU</h2>
-  <div class="food-menu-box container">
-      <div class="food-menu-item">
-          <div class="food-menu-image">
-              <img src="food-menu1.jpg" alt="">
-          </div>
-          <div class="food-menu-description">
-              <h2 class="food-title">Food Menu Item 1</h2>
-              <p class="x">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum, quam?</p>
-              <p class="price">250$</p>
-          </div>
-      </div>
-      <div class="food-menu-item">
-          <div class="food-menu-image">
-              <img src="food-menu2.jpg" alt="">
-          </div>
-          <div class="food-menu-description">
-              <h2 class="food-title">Food Menu Item 2</h2>
-              <p class="x">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum, quam?</p>
-              <p class="price">250$</p>
-          </div>
-      </div>
-      <div class="food-menu-item">
-          <div class="food-menu-image">
-              <img src="food-menu3.jpg" alt="">
-          </div>
-          <div class="food-menu-description">
-              <h2 class="food-title">Food Menu Item 3</h2>
-              <p class="x">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum, quam?</p>
-              <p class="price">250$</p>
-          </div>
-      </div>
-      <div class="food-menu-item">
-          <div class="food-menu-image">
-              <img src="food-menu4.jpg" alt="">
-          </div>
-          <div class="food-menu-description">
-              <h2 class="food-title">Food Menu Item 4</h2>
-              <p class="x">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum, quam?</p>
-              <p class="price">300$</p>
-          </div>
-      </div>
-      <div class="food-menu-item">
-          <div class="food-menu-image">
-              <img src="food-menu5.jpg" alt="">
-          </div>
-          <div class="food-menu-description">
-              <h2 class="food-title">Food Menu Item 5</h2>
-              <p class="x">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum, quam?</p>
-              <p class="price">220$</p>
-          </div>
-      </div>
-      <div class="food-menu-item">
-          <div class="food-menu-image">
-              <img src="food-menu6.jpg" alt="">
-          </div>
-          <div class="food-menu-description">
-              <h2 class="food-title">Food Menu Item 6</h2>
-              <p class="x">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum, quam?</p>
-              <p class="price">270$</p>
-          </div>
-      </div>
-  </div>
-</section>
+      function removeElements() {
+        var container = document.querySelector('.container2_2');
+        container.remove();
+      }
+      // * Scripting for the easter egg animation ENDS here
+      const searchInput = document.getElementById('search-input');
+      const placeholderText = 'Enter an ingredient';
+      let currentIndex = 0;
+      let isTyping = true;
 
+      function typePlaceholderText() {
+        if (isTyping) {
+          searchInput.placeholder = placeholderText.substring(0, currentIndex);
+          currentIndex++;
 
-<section id="Testimonials">
-  <h2 class="testimonial-title">What Our Customers Say</h2>
-  <div class="testimonial-container container">
-      <div class="testimonial-box">
-          <div class="star-rating">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
+          if (currentIndex > placeholderText.length) {
+            currentIndex = 0;
+          }
+        }
+      }
+      searchInput.addEventListener('focus', () => {
+        isTyping = false;
+        searchInput.placeholder = placeholderText; // Set the complete placeholder text when the user starts typing
+      });
+      searchInput.addEventListener('blur', () => {
+        isTyping = true;
+      });
+      setInterval(typePlaceholderText, 200); // Adjust the interval time (in milliseconds) to control the typing speed
+      $(document).ready(function () {
+        $('#search-btn').click(function () {
+          var searchBtn = $(this);
+          searchBtn.addClass('loading');
+
+          // Perform your search logic here
+
+          // Example delay for demonstration purposes
+          setTimeout(function () {
+            searchBtn.removeClass('loading');
+          }, 2000);
+        });
+      });
+      const searchBtn = document.getElementById('search-btn');
+      const mealList = document.getElementById('meal');
+      const mealDetailsContent = document.querySelector('.meal-details-content');
+      const recipeCloseBtn = document.getElementById('recipe-close-btn');
+
+      // event listeners
+      searchBtn.addEventListener('click', getMealList);
+      mealList.addEventListener('click', getMealRecipe);
+      recipeCloseBtn.addEventListener('click', () => {
+        mealDetailsContent.parentElement.classList.remove('showRecipe');
+      });
+      // get meal list that matches with the ingredients, recipe name, or area
+      function getMealList() {
+        let searchInputTxt = document.getElementById('search-input').value.trim();
+        Promise.all([
+          fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`).then(response => response.json()),
+          fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInputTxt}`).then(response => response.json()),
+          fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${searchInputTxt}`).then(response => response.json()),
+          fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchInputTxt}`).then(response => response.json())
+        ]).then(dataArr => {
+          let meals = [];
+          dataArr.forEach(data => {
+            if (data.meals) {
+              meals.push(...data.meals);
+            }
+          });
+          let html = "";
+          if (meals.length) {
+            meals.forEach(meal => {
+              html += `
+          <div class="meal-item" data-id="${meal.idMeal}">
+            <div class="meal-img">
+              <img src="${meal.strMealThumb}" alt="food">
+            </div>
+            <div class="meal-name">
+              <h3>${meal.strMeal}</h3>
+              <a href="#" class="recipe-btn">Get Recipe</a>
+            </div>
           </div>
-          <p class="testimonial-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi aut soluta, distinctio non ullam atque!</p>
-          <div class="customer-detail">
-              <div class="customer-photo"><img src="male-photo1.jpg" alt=""></div>
-              <p class="customer-name">John Doe</p>
-          </div>
-      </div>
+        `;
+            });
+            mealList.classList.remove('notFound');
+          } else {
+            html = "Sorry, we didn't find any meal!";
+            mealList.classList.add('notFound');
+          }
+          mealList.innerHTML = html;
+        });
+      }
 
-      <div class="testimonial-box">
-          <div class="star-rating">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-          </div>
-          <p class="testimonial-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi aut soluta, distinctio non ullam atque!</p>
-          <div class="customer-detail">
-              <div class="customer-photo"><img src="male-photo2.jpg" alt=""></div>
-              <p class="customer-name">Athundar Kail</p>
-          </div>
-      </div>
+      // get recipe of the meal
+      function getMealRecipe(e) {
+        e.preventDefault();
+        if (e.target.classList.contains('recipe-btn')) {
+          let mealItem = e.target.parentElement.parentElement;
+          fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem.dataset.id}`)
+            .then(response => response.json())
+            .then(data => mealRecipeModal(data.meals));
+        }
+      }
+      // create a modal
+      function mealRecipeModal(meal) {
+        console.log(meal);
+        meal = meal[0];
+        let html = `
+        <h2 class = "recipe-title">${meal.strMeal}</h2>
+          <div class="favorite-container">
+            <i class="fas fa-heart favorite-icon"></i>
+          </div
+        <p class = "recipe-category">${meal.strCategory}</p>
+        <div class = "recipe-instruct">
+            <h3>Instructions:</h3>
+            <p>${meal.strInstructions}</p>
+        </div>
+        <div class = "recipe-meal-img">
+            <img src = "${meal.strMealThumb}" alt = "">
+        </div>
+        <div class = "recipe-link">
+            <a href = "${meal.strYoutube}" target = "_blank">Watch Video</a>
+        </div>
+    `;
+        mealDetailsContent.innerHTML = html;
+        mealDetailsContent.parentElement.classList.add('showRecipe');
 
-      <div class="testimonial-box">
-          <div class="star-rating">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-          </div>
-          <p class="testimonial-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi aut soluta, distinctio non ullam atque!</p>
-          <div class="customer-detail">
-              <div class="customer-photo"><img src="male-photo3.jpg" alt=""></div>
-              <p class="customer-name">Fox Doe</p>
-          </div>
-      </div>
-      
-  </div>
-</section>
-<div style="height: 15px;"></div>
+        const favoriteIcon = document.querySelector('.favorite-icon');
 
-<!-- ###################### javascript code for smooth scrolling ################  -->
+        // Check if the recipe is a favorite
+        fetch(`/is-favorite?recipeName=${encodeURIComponent(meal.strMeal)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success && data.isFavorite) {
+              favoriteIcon.classList.add('favorite');
+            }
+          });
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-// Add smooth scrolling to all links
-$("a").on('click', function(event) {
-
-// Make sure this.hash has a value before overriding default behavior
-if (this.hash !== "") {
-// Prevent default anchor click behavior
-event.preventDefault();
-
-// Store hash
-var hash = this.hash;
-
-// Using jQuery's animate() method to add smooth page scroll
-// The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-$('html, body').animate({
-  scrollTop: $(hash).offset().top
-}, 800, function(){
-
-  // Add hash (#) to URL when done scrolling (default click behavior)
-  window.location.hash = hash;
-});
-} // End if
-});
-});
-</script>
-  <%- include("templates/footer") %> 
+        favoriteIcon.addEventListener('click', function () {
+          fetch('/add-favorite', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ recipeName: meal.strMeal }),
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                this.classList.add('favorite');
+              }
+            });
+        });
+      }
+    </script>
+    <%- include("templates/footer") %>

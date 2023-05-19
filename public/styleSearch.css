@@ -6,17 +6,58 @@
     box-sizing: border-box;
 }
 :root{
-    --tenne-tawny: #d65108;
-    --tenne-tawny-dark: #b54507;
+    --tenne-tawny: rgba(66, 135, 245, 0.8);
+    --modal-color: rgb(115, 163, 235);
+    --tenne-tawny-dark: rgba(11, 65, 151, 0.8);
 }
-body{
+body {
+    position: relative;
     font-weight: 300;
     font-size: 1.05rem;
     line-height: 1.6;
     font-family: 'Poppins', sans-serif;
 }
 
-/*  */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(mem.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    filter: blur(2px); /* Adjust the blur value as desired */
+    z-index: -1;
+}
+
+  body {
+    font-weight: 300;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    filter: blur(5px); /* Adjust the blur value as desired */
+  }
+  
+  .background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
 .btn{
     font-family: inherit;
     cursor: pointer;
@@ -31,15 +72,11 @@ body{
     margin-bottom: 1rem;
 }
 
-/*  */
-.container{
-    min-height: 100vh;
-}
 .meal-wrapper{
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
-    background: #fff;
+    border-radius: 20%;
     text-align: center;
 }
 .meal-search{
@@ -68,8 +105,11 @@ body{
     border-bottom-left-radius: 2rem;
 }
 .search-control::placeholder{
-    color: var(--tenne-tawny);
+    color: #0077b6;
+    font-size: 20px;
+    /* font-weight: bold; */
 }
+
 .search-btn{
     width: 55px;
     height: 55px;
@@ -150,14 +190,15 @@ body{
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     color: #fff;
-    background: var(--tenne-tawny);
+    font-size: 15px;
+    background: var(--modal-color);
     border-radius: 1rem;
     -webkit-border-radius: 1rem;
     -moz-border-radius: 1rem;
     -ms-border-radius: 1rem;
     -o-border-radius: 1rem;
     width: 90%;
-    height: 90%;
+    height: 80%;
     overflow-y: scroll;
     display: none;
     padding: 2rem 0;
@@ -166,7 +207,7 @@ body{
     width: 10px;
 }
 .meal-details::-webkit-scrollbar-thumb{
-    background: #f0f0f0;
+    background: rgba(81, 129, 207, 0.8);
     border-radius: 2rem;
     -webkit-border-radius: 2rem;
     -moz-border-radius: 2rem;
@@ -188,8 +229,8 @@ body{
 }
 .recipe-close-btn{
     position: absolute;
-    right: 2rem;
-    top: 2rem;
+    right: 1rem;
+    top: 0.5rem;
     font-size: 1.8rem;
     background: #fff;
     border: none;
@@ -264,8 +305,6 @@ body{
     opacity: 0.8;
 }
 
-
-/*  */
 .notFound{
     grid-template-columns: 1fr!important;
     color: var(--tenne-tawny);
@@ -273,11 +312,6 @@ body{
     font-weight: 600;
     width: 100%;
 }
-
-
-
-
-
 
 /* Media Queries */
 @media screen and (min-width: 600px){
@@ -307,8 +341,6 @@ body{
         grid-template-columns: repeat(3, 1fr);
     }
 }
-
-/* !Our Footer */
 
 #bottom-navbar > .footerImg {
     width: 40px;
@@ -346,12 +378,12 @@ body{
     margin-right: 0;
   }
 
-.navbar input[type='checkbox'],
-.navbar .hamburger-lines{
+.navbar1 input[type='checkbox'],
+.navbar1 .hamburger-lines{
     display: none;
 }
 
-.navbar{
+.navbar1{
     box-shadow: 0px 5px 10px 0px rgb(126, 126, 126);
     position: fixed;
     background-color: rgb(255, 255, 255);
@@ -360,7 +392,7 @@ body{
     z-index: 12;
 }
 
-.navbar-container{
+.navbar1-container{
     display: flex;
     justify-content: space-between;
     height: 60px;
@@ -399,22 +431,22 @@ body{
 
 @media (max-width: 768px){
 
-    .navbar{
+    .navbar1{
         opacity: .9;
     }
     
-    .navbar input[type='checkbox'],
-    .navbar .hamburger-lines{
+    .navbar1 input[type='checkbox'],
+    .navbar1 .hamburger-lines{
         display: block;
     }
 
-    .navbar-container{
+    .navbar1-container{
         display: block;
         position: relative;
         height: 64px;
     }
 
-    .navbar-container input[type='checkbox']{
+    .navbar1-container input[type='checkbox']{
         position: absolute;
         width: 40px;
         height: 32px;
@@ -425,7 +457,7 @@ body{
         
     }
 
-    .navbar-container .hamburger-lines{
+    .navbar1-container .hamburger-lines{
         position: absolute;
         width: 40px;
         height: 32px;
@@ -485,18 +517,18 @@ body{
         transition: all .4s ease-in-out;
     }
 
-    .navbar-container input[type='checkbox']:checked ~ .menu-items{
+    .navbar1-container input[type='checkbox']:checked ~ .menu-items{
         opacity: 1;
         transform: translatex(0);
     }
-    .navbar-container input[type='checkbox']:checked ~ .hamburger-lines .line1{
+    .navbar1-container input[type='checkbox']:checked ~ .hamburger-lines .line1{
         transform: rotate(45deg);
     }
 
-    .navbar-container input[type='checkbox']:checked ~ .hamburger-lines .line3{
+    .navbar1-container input[type='checkbox']:checked ~ .hamburger-lines .line3{
         transform: rotate(-45deg);
     }
-    .navbar-container input[type='checkbox']:checked ~ .hamburger-lines .line2{
+    .navbar1-container input[type='checkbox']:checked ~ .hamburger-lines .line2{
         display: none;
     }
 }
@@ -534,4 +566,157 @@ body{
         height: 50vmax;
     }
 }
+
+/* Gift box and welcome message styles */
+.container2_2 .gift-box {
+    width: 400px;
+    height: 400px;
+    background-image: url('genie12.png');
+    /* Replace 'genie12.png' with your actual image path */
+    background-size: cover;
+    animation: shake 0.8s infinite;
+    cursor: pointer;
+  }
+
+  .container2_2 {
+    position: fixed;
+    top: 50%;
+    backdrop-filter: blur(5px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    z-index: 9999;
+    /* Ensure the genie box stays on top */
+  }
+
+  .container2_2 .welcome-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-bottom: 60%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    text-align: center;
+    padding: 10px;
+    background-color: blanchedalmond;
+    color: rgb(187, 15, 15);
+    display: none;
+    animation: fade-in 1s ease-in-out;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: rotate(0);
+    }
+
+    25% {
+      transform: rotate(-10deg);
+    }
+
+    50% {
+      transform: rotate(10deg);
+    }
+
+    75% {
+      transform: rotate(-10deg);
+    }
+
+    100% {
+      transform: rotate(0);
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Add new CSS rule for the blurred background */
+  body.blurred-background {
+    backdrop-filter: blur(5px);
+  }
+
+.favorite-icon {
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 25px;
+    /* Adjust the font size to increase the icon size */
+    width: 32px;
+    /* Set the width of the icon */
+    height: 32px;
+    /* Set the height of the icon */
+  }
+
+  .favorite-icon.favorite {
+    color: rgb(255, 0, 0);
+    padding: 5px;
+    font-size: 25px;
+    /* Adjust the font size to increase the icon size */
+    width: 32px;
+    /* Set the width of the icon */
+    height: 32px;
+    /* Set the height of the icon */
+  }
+
+  .favorite-container {
+    display: block;
+    margin-bottom: 16px;
+    margin-top: -10px;
+  }
+
+  .meal-search-box {
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #f2f2f2;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .search-control {
+    flex: 1;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 16px;
+    border: none;
+    background-color: transparent;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+
+  .search-btn {
+    height: 40px;
+    width: 40px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 0 8px;
+    background-color: rgba(66, 135, 245, 0.8);
+    border: none;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    cursor: pointer;
+  }
+
+  .search-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url('path/to/your-image.png');
+    background-size: cover;
+    filter: invert(100%);
+  }
+
+  .search-btn:hover {
+    background-color: rgba(66, 135, 245, 0.8);
+  }
+
 
