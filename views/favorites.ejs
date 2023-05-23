@@ -1,89 +1,99 @@
 <%- include("templates/afterLoginHeader") %>
-<style>
-  .image-container .card-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    margin-top: 8px;
-    margin-left: 8px;
-    margin-bottom: 8px;
-    display: block;
-  }
+  <style>
+    .image-container .card-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+      -o-border-radius: 50%;
+      margin-top: 8px;
+      margin-left: 8px;
+      margin-bottom: 8px;
+      display: block;
+    }
 
-  .bi-heart {
-    font-size: 1.5rem;
-  }
+    .bi-heart {
+      font-size: 1.5rem;
+    }
 
-  .bi-heart.active {
-    color: red;
-  }
+    .bi-heart.active {
+      color: red;
+    }
 
-  .heart-btn {
-    position: absolute;
-    top: 0;
-    right: 0.5rem;
-    margin-top: 0.5rem;
-  }
+    .heart-btn {
+      position: absolute;
+      top: 0;
+      right: 0.5rem;
+      margin-top: 0.5rem;
+      z-index: 10;
+    }
 
-  .card-text {
-    margin-top: 1rem;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  .card-text.expanded {
-    -webkit-line-clamp: initial;
-  }
-
-  /* For non-mobile view  */
-  @media (min-width: 768px) {
     .card-title {
-      font-size: 2.5rem;
+      margin-top: 2rem;
+      
+    }
+
+    .card-body {
+      padding-top: 3rem;
     }
 
     .card-text {
-      font-size: 1.4rem;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
-  }
-</style>
-<div style="height: 120px"></div>
-<div class="container" id="favoritesContainer">
-  <!-- The favorite cards will be inserted here -->
-</div>
-<div style="height: 50px"></div>
 
-<script>
-  const favoritesContainer = document.getElementById("favoritesContainer");
+    .card-text.expanded {
+      -webkit-line-clamp: initial;
+    }
 
-  // Fetch the user's favorites
-  fetch("/api/favorites")
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success && data.favorites.length > 0) {
-        data.favorites.forEach((recipeName) => {
-          fetch(
-            `https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`
-          )
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Network response was not ok");
-              }
-              return response.json();
-            })
-            .then((data) => {
-              if (data.meals && data.meals.length > 0) {
-                const meal = data.meals[0];
-                const card = document.createElement("div");
-                card.className =
-                  "card d-flex flex-row align-items-stretch mb-3";
-                card.innerHTML = `
+    /* For non-mobile view  */
+    @media (min-width: 768px) {
+      .card-title {
+        font-size: 2.5rem;
+      }
+
+      .card-text {
+        font-size: 1.4rem;
+        margin-top: 1.5rem;
+      }
+    }
+  </style>
+  <div style="height: 120px"></div>
+  <div class="container" id="favoritesContainer">
+    <!-- The favorite cards will be inserted here -->
+  </div>
+  <div style="height: 50px"></div>
+
+  <script>
+    const favoritesContainer = document.getElementById("favoritesContainer");
+
+    // Fetch the user's favorites
+    fetch("/api/favorites")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success && data.favorites.length > 0) {
+          data.favorites.forEach((recipeName) => {
+            fetch(
+              `https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`
+            )
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                if (data.meals && data.meals.length > 0) {
+                  const meal = data.meals[0];
+                  const card = document.createElement("div");
+                  card.className =
+                    "card d-flex flex-row align-items-stretch mb-3";
+                  card.innerHTML = `
         <div class="image-container">    
           <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="card-img">
         </div>
@@ -95,62 +105,62 @@
           <p class="card-text">${meal.strInstructions}<br/><a href="${meal.strYoutube}" target="_blank">Watch Video</a></p>
         </div>
       `;
-                favoritesContainer.appendChild(card);
-              }
-            })
-            .catch((error) => {
-              console.error(
-                "There has been a problem with your fetch operation:",
-                error
-              );
-            });
-        });
-      } else {
-        favoritesContainer.innerText = "No favorite recipes found.";
+                  favoritesContainer.appendChild(card);
+                }
+              })
+              .catch((error) => {
+                console.error(
+                  "There has been a problem with your fetch operation:",
+                  error
+                );
+              });
+          });
+        } else {
+          favoritesContainer.innerText = "No favorite recipes found.";
+        }
+      });
+
+    // Listen for heart button clicks
+    favoritesContainer.addEventListener("click", (e) => {
+      if (e.target.closest(".heart-btn")) {
+        const heartBtn = e.target.closest(".heart-btn");
+        const recipeName = heartBtn.dataset.recipeName;
+        fetch("/remove-favorite", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ recipeName }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.success) {
+              heartBtn.classList.remove("active");
+              // Force a reflow of the heart button
+              void heartBtn.offsetHeight;
+              // Remove the card from the DOM
+              heartBtn.closest(".card").remove();
+            }
+          })
+          .catch((error) => {
+            console.error(
+              "There has been a problem with your fetch operation:",
+              error
+            );
+          });
       }
     });
 
-  // Listen for heart button clicks
-  favoritesContainer.addEventListener("click", (e) => {
-    if (e.target.closest(".heart-btn")) {
-      const heartBtn = e.target.closest(".heart-btn");
-      const recipeName = heartBtn.dataset.recipeName;
-      fetch("/remove-favorite", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ recipeName }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (data.success) {
-            heartBtn.classList.remove("active");
-            // Force a reflow of the heart button
-            void heartBtn.offsetHeight;
-            // Remove the card from the DOM
-            heartBtn.closest(".card").remove();
-          }
-        })
-        .catch((error) => {
-          console.error(
-            "There has been a problem with your fetch operation:",
-            error
-          );
-        });
-    }
-  });
-
-  // Listen for card text clicks
-  favoritesContainer.addEventListener("click", (e) => {
-    if (e.target.classList.contains("card-text")) {
-      e.target.classList.toggle("expanded");
-    }
-  });
-</script>
-<%- include("templates/afterLoginFooter") %>
+    // Listen for card text clicks
+    favoritesContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("card-text")) {
+        e.target.classList.toggle("expanded");
+      }
+    });
+  </script>
+  <%- include("templates/afterLoginFooter") %>
