@@ -1,178 +1,149 @@
 <%- include("templates/header") %>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function () {
-    $(".dropdown-menu a").click(function () {
-      var selectedOption = $(this).attr("value");
-      $("#dietaryPreferencesDropdown").text(selectedOption);
-      $("#dietaryPreferences").val(selectedOption);
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(".dropdown-menu a").click(function () {
+        var selectedOption = $(this).attr("value");
+        $("#dietaryPreferencesDropdown").text(selectedOption);
+        $("#dietaryPreferences").val(selectedOption);
+      });
     });
-  });
-</script>
-<div class="d-flex flex-column min-vh-100">
-  <div class="container" id="signUp">
-    <h1 style="color: rgb(0, 0, 0)">Sign Up</h1>
-    <form action="/signupSubmit" method="post">
-      <div class="mb-3">
-        <label for="email" class="form-label">Email:</label>
-        <input
-          style="width: 30%"
-          type="email"
-          id="email"
-          name="email"
-          class="form-control"
-          placeholder="Enter your email"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="username" class="form-label">Username:</label>
-        <input
-          style="width: 30%"
-          type="text"
-          id="username"
-          name="username"
-          class="form-control"
-          placeholder="Enter your username"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password:</label>
-        <input
-          style="width: 30%"
-          type="password"
-          id="password"
-          name="password"
-          class="form-control"
-          placeholder="Enter your password"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="dietaryPreferences" class="form-label"
-          >Dietary Preferences:</label
-        >
-        <div class="dropdown">
-          <button
-            class="btn btn-secondary dropdown-toggle dropdown-btn"
-            type="button"
-            id="dietaryPreferencesDropdown"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Select
-          </button>
-          <ul
-            class="dropdown-menu"
-            aria-labelledby="dietaryPreferencesDropdown"
-          >
-            <li><a class="dropdown-item" href="#" value="None">None</a></li>
-            <li><a class="dropdown-item" href="#" value="Vegan">Vegan</a></li>
-            <li>
-              <a class="dropdown-item" href="#" value="Vegetarian"
-                >Vegetarian</a
-              >
-            </li>
-            <li><a class="dropdown-item" href="#" value="Keto">Keto</a></li>
-            <li><a class="dropdown-item" href="#" value="Paleo">Paleo</a></li>
-            <li>
-              <a class="dropdown-item" href="#" value="Carnivore">Carnivore</a>
-            </li>
-          </ul>
-          <input
-            type="hidden"
-            id="dietaryPreferences"
-            name="dietaryPreferences"
-          />
+  </script>
+  <div class="d-flex flex-column min-vh-100">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-6 mt-5" id="overlay">
+          <h1 style="color: rgb(0, 0, 0)">Sign Up</h1>
+          <form action="/signupSubmit" method="post">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" />
+            </div>
+            <div class="mb-3">
+              <label for="username" class="form-label">Username:</label>
+              <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" />
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password:</label>
+              <input type="password" id="password" name="password" class="form-control"
+                placeholder="Enter your password" />
+            </div>
+            <div class="mb-3">
+              <label for="dietaryPreferences" class="form-label">Dietary Preferences:</label>
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle dropdown-btn" type="button"
+                  id="dietaryPreferencesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  Select
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dietaryPreferencesDropdown">
+                  <li><a class="dropdown-item" href="#" value="None">None</a></li>
+                  <li><a class="dropdown-item" href="#" value="Vegan">Vegan</a></li>
+                  <li>
+                    <a class="dropdown-item" href="#" value="Vegetarian">Vegetarian</a>
+                  </li>
+                  <li><a class="dropdown-item" href="#" value="Keto">Keto</a></li>
+                  <li><a class="dropdown-item" href="#" value="Paleo">Paleo</a></li>
+                  <li>
+                    <a class="dropdown-item" href="#" value="Carnivore">Carnivore</a>
+                  </li>
+                </ul>
+                <input type="hidden" id="dietaryPreferences" name="dietaryPreferences" />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+          </form>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary submit-btn">Submit</button>
-    </form>
+    </div>
   </div>
-</div>
-<style>
-  body {
-    overflow-y: hidden;
-  }
-  .form-label {
-    font-size: 18px;
-  }
-  body {
-    background-image: url(/im14.jpeg);
-    background-size: cover;
-    background-position: center;
-    backdrop-filter: blur(2px);
-  }
-  #signUp {
-    margin-left: 5.5%;
-    padding: 2%;
-    border-radius: 10px;
-  }
+  <style>
+    body {
+      overflow-y: hidden;
+    }
 
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
+    .form-label {
+      font-size: 18px;
+    }
 
-  .dropdown-toggle {
-    background-color: beige;
-    border: none;
-    color: #000;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+    body {
+      background-image: url(/signup.jpg);
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(2px);
+    }
 
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    padding: 10px 0;
-    border-radius: 5px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
-  }
+    #signUp {
+      margin-left: 5.5%;
+      padding: 2%;
+      border-radius: 10px;
+    }
 
-  .dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0s;
-  }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
 
-  .dropdown-item {
-    display: block;
-    padding: 8px 20px;
-    color: #0356bb;
-    font-size: 14px;
-  }
+    .dropdown-toggle {
+      background-color: beige;
+      border: none;
+      color: #000;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-  .dropdown-item:hover {
-    background-color: bisque;
-  }
-  .submit-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    background-color: rgba(
-      66,
-      135,
-      245,
-      0.8
-    ); /* Adjust the alpha value (0.8) for transparency */
-    color: #ffffff;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
-  }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #fff;
+      padding: 10px 0;
+      border-radius: 5px;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+    }
 
-  .submit-btn:hover {
-    background-color: #305c8b;
-  }
-</style>
-<%- include("templates/footer") %>
+    .dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 8px 20px;
+      color: #0356bb;
+      font-size: 14px;
+    }
+
+    .dropdown-item:hover {
+      background-color: bisque;
+    }
+
+    .submit-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      background-color: rgba(66,
+          135,
+          245,
+          0.8);
+      /* Adjust the alpha value (0.8) for transparency */
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #305c8b;
+    }
+  </style>
+  <%- include("templates/footer") %>
