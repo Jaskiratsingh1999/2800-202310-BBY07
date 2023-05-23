@@ -87,6 +87,13 @@ app.get('/favorites', (req, res) => {
   }
 });
 
+app.get('/policy', (req, res) => {
+  if(!req.session.authenticated) {
+    res.render("policyBefore");
+  } else {
+    res.render("policyAfter");
+  }
+});
 
   app.get('/nosql-injection', async (req,res) => {
 	var username = req.query.user;
@@ -185,11 +192,27 @@ app.get('/forgot-password', async (req, res) => {
 
   // Send the password reset email with the reset token
   const resetLink = `http://${req.get('host')}/password-reset?token=${resetToken}&email=${email}`;
+  const privacyPolicyLink = 'http://qtzylphnvs.eu09.qoddiapp.com/policy';
+  const imagePath = 'https://cdn.discordapp.com/attachments/1096297355571105823/1110607753510129725/genie12.png';
   const mailOptions = {
     from: 'meal.geniebby07@gmail.com',
     to: email,
     subject: 'Password Reset',
-    text: `Please click the following link to reset your password: ${resetLink}`
+    html: `
+      <p>Please click the following link to reset your password: <a href="${resetLink}">Reset Password</a></p>
+      <hr>
+      <p>
+        <strong>Privacy Policy:</strong><br>
+        Protecting your privacy is important to us. Learn how we collect, use, and protect your information in our 
+        <a href="${privacyPolicyLink}">Privacy Policy</a>.
+      </p>
+      <p>
+        <strong>Attribution:</strong><br>
+        We respect recipe creators. Meal Genie attributes recipes to their original authors. If you have any concerns, please contact us.
+      </p>
+      <img src="${imagePath}" alt="Meal Genie">
+      <p>MEAL GENIE 2023 ©</p>
+    `
   };
 
   try {
