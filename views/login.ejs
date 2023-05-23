@@ -1,103 +1,124 @@
 <%- include("templates/header") %>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
 
-<div class="d-flex flex-column min-vh-100">
-  <div class="container py-5">
-    <div class="row justify-content-center align-items-center">
-      <div class="col-md-6 mt-5" id="overlay">
-        <h1 class="text-center mb-5 mt-5">Welcome Back Genies!</h1>
-        <form action="/loggingin" method="post">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email address:</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              aria-describedby="emailHelp"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              required
-            />
-            <p id="forgotPasswordMessage" name="forgotPasswordMessage"></p>
-            <p>
-              <a
-                href="#"
-                id="forgotPasswordLink"
-                style="font-size: 12px; color: blue"
-                >I forgot my password</a
-              >
-            </p>
-          </div>
-          <button type="submit" class="loginBtn">Ready, Set, Cook!</button>
-        </form>
+  <div class="d-flex flex-column min-vh-100">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-6 mt-5" id="overlay">
+          <h1 class="text-center mb-5 mt-5">Welcome Back Genies!</h1>
+          <form action="/loggingin" method="post">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address:</label>
+              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required />
+            </div>
+            <div class="mb-3 password-container">
+              <label for="password" class="form-label">Password:</label>
+              <input type="password" class="form-control" id="password" name="password" required />
+              <i id="togglePassword" class="fas fa-eye-slash fa-2x"></i>
+              <p id="forgotPasswordMessage" name="forgotPasswordMessage"></p>
+              <p>
+                <a href="#" id="forgotPasswordLink" style="font-size: 12px; color: blue">I forgot my password</a>
+              </p>
+            </div>
+            <button type="submit" class="loginBtn">Ready, Set, Cook!</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<style>
-  .loginBtn {
-    margin-top: 2%;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-    background-color: rgba(
-      66,
-      135,
-      245,
-      0.8
-    ); /* Adjust the alpha value (0.8) for transparency */
-    color: #ffffff;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  .form-label {
-    font-size: 18px;
-  }
-
-  body {
-    overflow-y: hidden;
-    background-image: url(/loginPage.jpeg);
-    background-size: cover;
-    background-position: center;
-    backdrop-filter: blur(2px);
-  }
-</style>
-
-<%- include("templates/footer") %>
-<script>
-  document
-    .getElementById("forgotPasswordLink")
-    .addEventListener("click", function (event) {
-      event.preventDefault();
-      handleForgotPassword();
-    });
-
-  function handleForgotPassword() {
-    const email = document.getElementById("email").value;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!email) {
-      document.getElementById("forgotPasswordMessage").textContent =
-        "If you have forgotten your password, please enter your email in the email address bar and then click on the link below.";
-    } else if (!emailRegex.test(email)) {
-      document.getElementById("forgotPasswordMessage").textContent =
-        "Please enter a valid email address.";
-    } else {
-      // If email is entered and has the correct format, navigate to the /forgot-password route
-      window.location.href = `/forgot-password?email=${encodeURIComponent(
-        email
-      )}`;
+  <style>
+    .loginBtn {
+      margin-top: 2%;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      background-color: rgba(66,
+          135,
+          245,
+          0.8);
+      /* Adjust the alpha value (0.8) for transparency */
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
-  }
-</script>
+
+    .form-label {
+      font-size: 18px;
+    }
+
+    body {
+      overflow-y: hidden;
+      background-image: url(/loginPage.jpeg);
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(2px);
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .password-container .fa-eye,
+    .password-container .fa-eye-slash {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      cursor: pointer;
+    }
+  </style>
+
+  <%- include("templates/footer") %>
+    <script>
+      $(document).ready(function () {
+        $("#togglePassword").click(function () {
+          var inputElement = $("#password");
+          if (inputElement.attr("type") === "password") {
+            inputElement.attr("type", "text");
+            $(this).removeClass("fa-eye-slash");
+            $(this).addClass("fa-eye");
+          } else {
+            inputElement.attr("type", "password");
+            $(this).removeClass("fa-eye");
+            $(this).addClass("fa-eye-slash");
+          }
+        });
+      });
+
+      $("form").on("submit", function (e) {
+        var email = $("#email").val();
+        var password = $("#password").val();
+        if (email === "" || password === "") {
+          alert("Both email and password fields must be filled in");
+          e.preventDefault();
+        }
+      });
+
+      document
+        .getElementById("forgotPasswordLink")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          handleForgotPassword();
+        });
+
+      function handleForgotPassword() {
+        const email = document.getElementById("email").value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email) {
+          document.getElementById("forgotPasswordMessage").textContent =
+            "If you have forgotten your password, please enter your email in the email address bar and then click on the link below.";
+        } else if (!emailRegex.test(email)) {
+          document.getElementById("forgotPasswordMessage").textContent =
+            "Please enter a valid email address.";
+        } else {
+          // If email is entered and has the correct format, navigate to the /forgot-password route
+          window.location.href = `/forgot-password?email=${encodeURIComponent(
+            email
+          )}`;
+        }
+      }
+    </script>
