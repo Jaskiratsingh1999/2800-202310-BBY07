@@ -141,15 +141,15 @@ app.post('/signupSubmit', async (req, res) => {
   }
   const schema = Joi.object(
     {
-      username: Joi.string().alphanum().max(40).required(),
+      username: Joi.string().alphanum().min(1).max(20).required(),
       email: Joi.string().email().required(),
-      password: Joi.string().max(20).required()
+      password: Joi.string().min(7).max(20).required()
     });
 
   const validationResult = schema.validate({ username, email, password });
   if (validationResult.error != null) {
     console.log(validationResult.error);
-    res.render("404", { error: `${validationResult.error.message}` });
+    res.status(400).send(validationResult.error.message);
     return;
   }
 

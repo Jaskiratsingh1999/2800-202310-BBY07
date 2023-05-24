@@ -115,7 +115,6 @@
       cursor: pointer;
     }
   </style>
-
   <div class="d-flex flex-column min-vh-100">
     <div class="container py-5">
       <div class="row justify-content-center align-items-center">
@@ -162,20 +161,42 @@
       </div>
     </div>
   </div>
-
+  <!-- Error Modal -->
+  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="errorModalLabel">Sign Up Error</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="errorModalBody">
+          <!-- Error message will be inserted here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
-    const form = document.querySelector("form");
+    // Helper function to display the error modal with a given message
+    function showErrorModal(message) {
+      $('#errorModalBody').text(message);
+      var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {});
+      errorModal.show();
+    }
+  
     $(document).ready(function () {
       $(".dropdown-menu a").click(function () {
         var selectedOption = $(this).attr("value");
         $("#dietaryPreferencesDropdown").text(selectedOption);
         $("#dietaryPreferences").val(selectedOption);
       });
-
+  
       $("#togglePassword").click(function () {
         var inputElement = $("#password");
         var tooltipInstance = bootstrap.Tooltip.getInstance(this);
-
+  
         if (inputElement.attr("type") === "password") {
           inputElement.attr("type", "text");
           $(this).removeClass("fa-eye-slash");
@@ -190,31 +211,54 @@
           new bootstrap.Tooltip(this, { title: 'Show password' });
         }
       });
-
+  
       $("form").on("submit", function (event) {
+        event.preventDefault();
+  
         var email = $("#email").val();
         var username = $("#username").val();
         var password = $("#password").val();
-
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  // Basic email regex
-
+        var dietaryPreferences = $("#dietaryPreferences").val();
+  
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
         if (!emailRegex.test(email)) {
-          event.preventDefault();
-          alert("Please enter a valid email address.");
+          showErrorModal("Please enter a valid email address.");
+          return;
         }
 
-        if (!username || !password) {
-          event.preventDefault();
-          alert("Please fill all the mandatory fields.");
+        if (username.length < 1 || username.length > 20) {
+          showErrorModal("Username must be between 1 and 20 characters long.");
+          return;
         }
+
+        if (password.length < 7) {
+          showErrorModal("Password must be at least 7 characters long.");
+          return;
+        }
+  
+        $.ajax({
+          type: "POST",
+          url: "/signupSubmit",
+          data: {
+            email: email,
+            username: username,
+            password: password,
+            dietaryPreferences: dietaryPreferences
+          },
+          success: function(data, status, xhr) {
+            window.location.href = "/members";
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            showErrorModal(jqXHR.responseText);
+          }
+        });
       });
-
+  
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
       })
     });
-
   </script>
-
   <%- include("templates/footer") %>
