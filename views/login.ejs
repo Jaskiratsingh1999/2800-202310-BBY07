@@ -1,6 +1,11 @@
 <%- include("templates/header") %>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
 
   <div class="d-flex flex-column min-vh-100">
     <div class="container py-5">
@@ -15,7 +20,7 @@
             <div class="mb-3 password-container">
               <label for="password" class="form-label">Password:</label>
               <input type="password" class="form-control" id="password" name="password" required />
-              <i id="togglePassword" class="fas fa-eye-slash fa-2x"></i>
+              <i id="togglePassword" class="fas fa-eye-slash fa-2x" data-bs-toggle="tooltip" title="Show password"></i>
               <p id="forgotPasswordMessage" name="forgotPasswordMessage"></p>
               <p>
                 <a href="#" id="forgotPasswordLink" style="font-size: 12px; color: blue">I forgot my password</a>
@@ -74,19 +79,38 @@
   <%- include("templates/footer") %>
     <script>
       $(document).ready(function () {
+        var tooltip = null;
+
+        createTooltip('Show password');
+
         $("#togglePassword").click(function () {
           var inputElement = $("#password");
+
           if (inputElement.attr("type") === "password") {
             inputElement.attr("type", "text");
             $(this).removeClass("fa-eye-slash");
             $(this).addClass("fa-eye");
+            $(this).attr('title', 'Hide password');
+            tooltip.dispose();
+            createTooltip('Hide password');
           } else {
             inputElement.attr("type", "password");
             $(this).removeClass("fa-eye");
             $(this).addClass("fa-eye-slash");
+            $(this).attr('title', 'Show password');
+            tooltip.dispose();
+            createTooltip('Show password');
           }
         });
+
+        function createTooltip(title) {
+          tooltip = new bootstrap.Tooltip(document.querySelector('#togglePassword'), {
+            title: title
+          });
+        }
       });
+
+
 
       $("form").on("submit", function (e) {
         var email = $("#email").val();

@@ -1,6 +1,9 @@
 <%- include("templates/header") %>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
   <script>
     $(document).ready(function () {
       $(".dropdown-menu a").click(function () {
@@ -8,37 +11,48 @@
         $("#dietaryPreferencesDropdown").text(selectedOption);
         $("#dietaryPreferences").val(selectedOption);
       });
-  
+
       $("#togglePassword").click(function () {
         var inputElement = $("#password");
+        var tooltipInstance = bootstrap.Tooltip.getInstance(this);
+
         if (inputElement.attr("type") === "password") {
           inputElement.attr("type", "text");
           $(this).removeClass("fa-eye-slash");
           $(this).addClass("fa-eye");
+          tooltipInstance.dispose();
+          new bootstrap.Tooltip(this, { title: 'Hide password' });
         } else {
           inputElement.attr("type", "password");
           $(this).removeClass("fa-eye");
           $(this).addClass("fa-eye-slash");
+          tooltipInstance.dispose();
+          new bootstrap.Tooltip(this, { title: 'Show password' });
         }
       });
-  
-      $("form").on("submit", function(event) {
+
+      $("form").on("submit", function (event) {
         var email = $("#email").val();
         var username = $("#username").val();
         var password = $("#password").val();
-  
+
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  // Basic email regex
-  
-        if(!emailRegex.test(email)) {
+
+        if (!emailRegex.test(email)) {
           event.preventDefault();
           alert("Please enter a valid email address.");
         }
-  
-        if(!username || !password) {
+
+        if (!username || !password) {
           event.preventDefault();
           alert("Please fill all the mandatory fields.");
         }
       });
+
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
     });
   </script>
 
@@ -60,14 +74,14 @@
               <label for="password" class="form-label">Password:<span class="required">*</span></label>
               <input type="password" id="password" name="password" class="form-control"
                 placeholder="Enter your password" />
-              <i id="togglePassword" class="fas fa-eye-slash fa-2x"></i>
+              <i id="togglePassword" class="fas fa-eye-slash fa-2x" data-bs-toggle="tooltip" title="Show password"></i>
             </div>
             <div class="mb-3">
               <label for="dietaryPreferences" class="form-label">Dietary Preferences:</label>
               <br>
               <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle dropdown-btn" type="button"
-                  id="dietaryPreferencesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-info dropdown-toggle dropdown-btn" type="button" id="dietaryPreferencesDropdown"
+                  data-bs-toggle="dropdown" aria-expanded="false">
                   Select
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dietaryPreferencesDropdown">
@@ -83,11 +97,21 @@
             </div>
             <p class="note">Fields marked with <span class="required">*</span> are mandatory</p>
             <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+            <button type="button" class="btn btn-secondary clear-btn mx-5">Clear</button>
           </form>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    const clearBtn = document.querySelector(".clear-btn");
+    const form = document.querySelector("form");
+  
+    clearBtn.addEventListener("click", () => {
+      form.reset();
+    });
+  </script>
   <style>
     body {
       overflow-y: hidden;
@@ -116,7 +140,7 @@
     }
 
     .dropdown-toggle {
-      /* background-color: skyblue; */
+      background-color: #02D8D0;
       border: none;
       color: black;
       padding: 10px 20px;
@@ -163,11 +187,7 @@
       font-size: 12px;
       font-weight: bold;
       text-transform: uppercase;
-      background-color: rgba(66,
-          135,
-          245,
-          0.8);
-      /* Adjust the alpha value (0.8) for transparency */
+      background-color: #108FFD;
       color: #ffffff;
       cursor: pointer;
       transition: background-color 0.3s;
@@ -176,6 +196,24 @@
 
     .submit-btn:hover {
       background-color: #305c8b;
+    }
+
+    .clear-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #ffffff;
+      
+      background-color: rgba(66,
+          135,
+          245,
+          0.8);
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 10px;
     }
 
     .required {

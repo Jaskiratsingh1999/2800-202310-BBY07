@@ -184,13 +184,22 @@ function generateResetToken() {
 app.get('/forgot-password', async (req, res) => {
   const { email } = req.query;
 
-  // Generate a unique reset token
+  let user;
+  try {
+    user = await userCollection.findOne({ email: email });
+    if (!user) {
+      console.error('User not found:', email);
+      return res.status(404).send('User not found');
+    }
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return res.status(500).send('Error fetching user');
+  }
+
   const resetToken = generateResetToken();
 
-  // Store the reset token in the user's document
   await updateUserResetToken(email, resetToken);
 
-  // Send the password reset email with the reset token
   const resetLink = `http://${req.get('host')}/password-reset?token=${resetToken}&email=${email}`;
   const privacyPolicyLink = 'http://qtzylphnvs.eu09.qoddiapp.com/policy';
   const imagePath = 'https://cdn.discordapp.com/attachments/1096297355571105823/1110607753510129725/genie12.png';
@@ -199,6 +208,7 @@ app.get('/forgot-password', async (req, res) => {
     to: email,
     subject: 'Password Reset',
     html: `
+      <p>Dear ${user.username},</p>
       <p>Please click the following link to reset your password: <a href="${resetLink}">Reset Password</a></p>
       <hr>
       <p>
@@ -224,6 +234,7 @@ app.get('/forgot-password', async (req, res) => {
 
   res.redirect('/password-reset-confirmation');
 });
+
 
 app.get('/password-reset-confirmation', (req, res) => {
   res.render('password-reset-confirmation');
