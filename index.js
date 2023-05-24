@@ -75,7 +75,7 @@ app.get('/', (req, res) => {
     res.render('index', { authenticated: false });
   }
   else {
-      res.redirect('/members');
+    res.redirect('/members');
   }
 });
 
@@ -83,20 +83,20 @@ app.get('/favorites', (req, res) => {
   if (!req.session.authenticated) {
     res.redirect('/');
   } else {
-    res.render('favorites', {authenticated: true, username: req.session.username});
+    res.render('favorites', { authenticated: true, username: req.session.username });
   }
 });
 
 app.get('/policy', (req, res) => {
-  if(!req.session.authenticated) {
+  if (!req.session.authenticated) {
     res.render("policyBefore");
   } else {
     res.render("policyAfter");
   }
 });
 
-  app.get('/nosql-injection', async (req,res) => {
-	var username = req.query.user;
+app.get('/nosql-injection', async (req, res) => {
+  var username = req.query.user;
 
   if (!username) {
     res.send(`<h3>no user provided - try /nosql-injection?user=name</h3> <h3>or /nosql-injection?user[$ne]=name</h3>`);
@@ -146,12 +146,12 @@ app.post('/signupSubmit', async (req, res) => {
       password: Joi.string().max(20).required()
     });
 
-    const validationResult = schema.validate({ username, email, password });
-    if (validationResult.error != null) {
-        console.log(validationResult.error);
-        res.render("404", { error: `${validationResult.error.message}`});
-        return;
-    }
+  const validationResult = schema.validate({ username, email, password });
+  if (validationResult.error != null) {
+    console.log(validationResult.error);
+    res.render("404", { error: `${validationResult.error.message}` });
+    return;
+  }
 
   var hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -257,7 +257,7 @@ app.post('/reset-password', async (req, res) => {
     return res.redirect('/password-reset-success');
   } catch (error) {
     console.error('Error updating password:', error);
-y
+    y
     return res.status(500).send('An error occurred while updating the password.');
   }
 });
@@ -277,7 +277,7 @@ app.get('/oauth2callback', async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
     clientId,
     clientSecret,
-    'http://localhost:3000/oauth2callback'  
+    'http://localhost:3000/oauth2callback'
   );
 
   const { code } = req.query;
@@ -306,37 +306,35 @@ app.post('/loggingin', async (req, res) => {
   const validationResult = schema.validate(email);
   if (validationResult.error != null) {
     console.log(validationResult.error);
-    res.render("errorMessage", { error: `${validationResult.error.message}` });
+    res.status(401).send({ error: "The password and email address do not match." });
     return;
   }
 
-
   const result = await userCollection.find({ email: email }).project({ email: 1, password: 1, username: 1, user_type: 1, _id: 1 }).toArray();
 
+  console.log(result);
+  if (result.length != 1) {
+    console.log("Cannot find the user");
+    res.status(401).send({ error: "The password and email address do not match." });
+    return;
+  }
 
-    console.log(result);
-    if (result.length != 1) {
-        console.log("Cannot find the user");
-        res.render("404", { error: "We cannot find at the moment! "});
-        return;
-      }
-      
-    if (await bcrypt.compare(password, result[0].password)) {
-        console.log("correct password");
-        req.session.authenticated = true;
-        req.session.email = email;
-        req.session.username = result[0].username;
-        req.session.user_type = result[0].user_type;
-        req.session._id = result[0]._id;
-        req.session.cookie.maxAge = time;
-        res.redirect('/members');
-        return;
-    }
-    else {
-        console.log("incorrect password");
-        res.render("404", { error: "Your Password Incorrect!"});
-        return;
-    }
+  if (await bcrypt.compare(password, result[0].password)) {
+    console.log("correct password");
+    req.session.authenticated = true;
+    req.session.email = email;
+    req.session.username = result[0].username;
+    req.session.user_type = result[0].user_type;
+    req.session._id = result[0]._id;
+    req.session.cookie.maxAge = time;
+    res.redirect('/members');
+    return;
+  }
+  else {
+    console.log("incorrect password");
+    res.status(401).send({ error: "The password and email address do not match." });
+    return;
+  }
 });
 
 
@@ -421,7 +419,7 @@ app.post('/add-favorite', async (req, res) => {
 
   try {
     const result = await userCollection.updateOne(
-      { email: req.session.email }, 
+      { email: req.session.email },
       { $addToSet: { favorites: recipeName } }
     );
 
@@ -430,7 +428,7 @@ app.post('/add-favorite', async (req, res) => {
     }
 
     res.send({ success: true });
-  } catch(err) {
+  } catch (err) {
     console.error("Error updating favorite: ", err);
     res.status(500).send({ success: false, error: err.toString() });
   }
@@ -450,7 +448,7 @@ app.get('/is-favorite', async (req, res) => {
 
   try {
     const user = await userCollection.findOne(
-      { email: req.session.email } 
+      { email: req.session.email }
     );
 
     if (!user) {
@@ -459,7 +457,7 @@ app.get('/is-favorite', async (req, res) => {
 
     const isFavorite = user.favorites.includes(recipeName);
     res.send({ success: true, isFavorite });
-  } catch(err) {
+  } catch (err) {
     console.error("Error checking favorite: ", err);
     res.status(500).send({ success: false, error: err.toString() });
   }
@@ -480,10 +478,10 @@ app.get('/profile', async (req, res) => {
     res.redirect('/');
   } else {
     try {
-      const result = await userCollection.find({email: req.session.email}).project({email: 1, password: 1, username: 1, dietary_preference: 1, image: 1 ,id: 1}).toArray();
+      const result = await userCollection.find({ email: req.session.email }).project({ email: 1, password: 1, username: 1, dietary_preference: 1, image: 1, id: 1 }).toArray();
       const user = result[0];
       console.log(user.image);
-      res.render('profile', { user});
+      res.render('profile', { user });
     } catch (err) {
       console.error('Failed to fetch user', err);
       res.status(500).send('Internal Server Error');
@@ -498,17 +496,17 @@ app.post('/profile/password', async (req, res) => {
   if (password.length < MIN_PASSWORD_LENGTH) {
     return res.status(400).send(`Password must be at least ${MIN_PASSWORD_LENGTH} characters long`);
   }
-  else{
-  const hashedPassword = await bcrypt.hash(password, 12);
-  console.log(hashedPassword);
-  const result = await userCollection.updateOne({ email: req.session.email }, { $set: { password: hashedPassword } });
-  if (result.modifiedCount === 1) {
-    console.log('Password updated successfully');
-    res.redirect('/profile');
-  } else {
-    res.send('Failed to update password');
+  else {
+    const hashedPassword = await bcrypt.hash(password, 12);
+    console.log(hashedPassword);
+    const result = await userCollection.updateOne({ email: req.session.email }, { $set: { password: hashedPassword } });
+    if (result.modifiedCount === 1) {
+      console.log('Password updated successfully');
+      res.redirect('/profile');
+    } else {
+      res.send('Failed to update password');
+    }
   }
-}
 });
 
 const multer = require('multer');

@@ -19,13 +19,30 @@
               </p>
             </div>
             <button type="submit" class="loginBtn">Ready, Set, Cook!</button>
+            <!-- Error modal -->
+            <div id="errorModal" class="modal" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p id="errorText"></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </form>
         </div>
       </div>
     </div>
   </div>
   <style>
-    
     .required {
       color: red;
     }
@@ -34,6 +51,7 @@
       margin-bottom: 20%;
       text-align: center;
     }
+
     .loginBtn {
       margin-top: 2%;
       padding: 10px 20px;
@@ -114,13 +132,33 @@
 
 
       $("form").on("submit", function (e) {
+        e.preventDefault();
+
         var email = $("#email").val();
         var password = $("#password").val();
+
         if (email === "" || password === "") {
           alert("Both email and password fields must be filled in");
-          e.preventDefault();
+          return;
         }
+
+        $.ajax({
+          url: "/loggingin",
+          type: "POST",
+          data: { email: email, password: password },
+          success: function () {
+            window.location.href = '/members';
+          },
+          error: function (xhr) {
+            var response = JSON.parse(xhr.responseText);
+            // Show modal with error message
+            $("#errorText").text(response.error);
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+          }
+        });
       });
+
 
       document
         .getElementById("forgotPasswordLink")
