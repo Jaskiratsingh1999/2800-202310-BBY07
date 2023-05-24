@@ -135,6 +135,8 @@ body::after {
     margin: 2.4rem 0;
 }
 .meal-item{
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 3px solid white;
     border-radius: 1rem;
     -webkit-border-radius: 1rem;
     -moz-border-radius: 1rem;
@@ -179,26 +181,54 @@ body::after {
     background: var(--tenne-tawny-dark);
 }
 
+/* !!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!! */
+.category-tags {
+    margin-top: 30px;
+  }
+  
+  .category-tag {
+    display: inline-block;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: rgba(144, 181, 240, 0.8);
+    border-radius: 5px;
+    cursor: pointer;
+    color: rgb(13, 0, 0);
+    font-size: 15px;
+  }
+  
+  .category-tag:hover {
+    background-color: #c0c0c0;
+  }
+  
+/* !!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!! */
+  
 /* meal details */
 .meal-details{
     position: fixed;
-    top: 50%;
+    top: 51%;
     left: 50%;
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 15px;
-    background: var(--modal-color);
+    color: #000080;
+    border: 1px solid black;
+    font-size: 16px;
+    background: #E1F5FE;
     border-radius: 1rem;
     -webkit-border-radius: 1rem;
     -moz-border-radius: 1rem;
     -ms-border-radius: 1rem;
     -o-border-radius: 1rem;
     width: 90%;
-    height: 80%;
+    height: 82%;
     overflow-y: scroll;
     display: none;
     padding: 2rem 0;

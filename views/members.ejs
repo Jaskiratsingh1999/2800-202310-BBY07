@@ -1,11 +1,11 @@
 <%- include("templates/headerSearch") %>
 <div style="height: 50px"></div>
-<div class="container2_2">
+<!-- <div class="container2_2">
   <div class="gift-box" onclick="showWelcomeMessage()"></div>
   <div class="welcome-message" id="welcomeMessage">
     Let me Open the Chambers for you :)
   </div>
-</div>
+</div> -->
 <div style="height: 50px"></div>
 <div class="container">
   <div class="meal-wrapper">
@@ -25,6 +25,22 @@
           <i class="fa fa-search search-icon"></i>
         </button>
       </div>
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <div class="filter-btn-wrapper">
+    <div class="category-tags" id="category-tags">
+      <!-- Category name tags will be added dynamically -->
+    </div>
+    
+  </div>
+  
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+      
       <div class="meal-result">
         <h2 class="title">Your Search Results:</h2>
         <div id="meal"></div>
@@ -171,25 +187,25 @@
     }
     // create a modal
     function mealRecipeModal(meal) {
-      console.log(meal);
-      meal = meal[0];
-      let html = `
-        <h2 class = "recipe-title">${meal.strMeal}</h2>
-          <div class="favorite-container">
-            <i class="fas fa-heart favorite-icon"></i>
-          </div
-        <p class = "recipe-category">${meal.strCategory}</p>
-        <div class = "recipe-instruct">
-            <h3>Instructions:</h3>
-            <p>${meal.strInstructions}</p>
-        </div>
-        <div class = "recipe-meal-img">
-            <img src = "${meal.strMealThumb}" alt = "">
-        </div>
-        <div class = "recipe-link">
-            <a href = "${meal.strYoutube}" target = "_blank">Watch Video</a>
-        </div>
-    `;
+  console.log(meal);
+  meal = meal[0];
+  let html = `
+    <h2 class="recipe-title">${meal.strMeal}</h2>
+    <div class="favorite-container">
+      <i class="fas fa-heart favorite-icon"></i>
+    </div>
+    <p class="recipe-category">${meal.strCategory}</p>
+    <div class="recipe-meal-img">
+      <img src="${meal.strMealThumb}" alt="">
+    </div>
+    <div class="recipe-link">
+      <a href="${meal.strYoutube}" target="_blank" style="color: black;">Watch Video</a>
+    </div>
+    <div class="recipe-instruct">
+      <h3>Instructions:</h3>
+      <p>${meal.strInstructions}</p>
+    </div>
+  `;
       mealDetailsContent.innerHTML = html;
       mealDetailsContent.parentElement.classList.add("showRecipe");
 
@@ -220,6 +236,81 @@
           });
       });
     }
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Filter button click event handler
+$("#filter-btn").click(function () {
+  // Show a prompt to enter the category
+  var category = prompt("Enter a category to filter by:");
+
+  if (category) {
+    // Call the filterMealsByCategory function with the entered category
+    filterMealsByCategory(category);
+  }
+});
+
+// Function to filter meals by category
+// Fetch categories from the API and populate the dropdown list options
+// Fetch categories from the API and populate the dropdown list options
+// Fetch categories from the API and generate category name tags
+fetch("https://www.themealdb.com/api/json/v1/1/categories.php")
+  .then((response) => response.json())
+  .then((data) => {
+    const categoryTags = document.getElementById("category-tags");
+    data.categories.forEach((category) => {
+      const tag = document.createElement("span");
+      tag.classList.add("category-tag");
+      tag.textContent = category.strCategory;
+      tag.addEventListener("click", function () {
+        filterMealsByCategory(category.strCategory);
+      });
+      categoryTags.appendChild(tag);
+    });
+  });
+
+// Function to filter meals by category
+function filterMealsByCategory(category) {
+  // Get the current search input value
+  var searchInputTxt = document.getElementById("search-input").value.trim();
+
+  // Fetch the meals filtered by both the search input and the category
+  fetch(
+    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}&c=${category}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      let meals = data.meals || [];
+      let html = "";
+      if (meals.length) {
+        meals.forEach((meal) => {
+          html += `
+            <div class="meal-item" data-id="${meal.idMeal}">
+              <div class="meal-img">
+                <img src="${meal.strMealThumb}" alt="food">
+              </div>
+              <div class="meal-name">
+                <h3>${meal.strMeal}</h3>
+                <a href="#" class="recipe-btn">Get Recipe</a>
+              </div>
+            </div>
+          `;
+        });
+        mealList.classList.remove("notFound");
+      } else {
+        html = "Sorry, we didn't find any meal!";
+        mealList.classList.add("notFound");
+      }
+      mealList.innerHTML = html;
+    });
+}
+
+
+
   </script>
   <%- include("templates/afterLoginFooter") %>
 </div>

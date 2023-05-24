@@ -220,7 +220,7 @@ app.get('/forgot-password', async (req, res) => {
         <strong>Attribution:</strong><br>
         We respect recipe creators. Meal Genie attributes recipes to their original authors. If you have any concerns, please contact us.
       </p>
-      <img src="${imagePath}" alt="Meal Genie">
+      <img src="${imagePath}" alt="Meal Genie" style="height: 125px;">
       <p>MEAL GENIE 2023 ©</p>
     `
   };
