@@ -1,158 +1,133 @@
 <%- include("templates/headerSearch") %>
-<div style="height: 50px"></div>
-<!-- <div class="container2_2">
-  <div class="gift-box" onclick="showWelcomeMessage()"></div>
-  <div class="welcome-message" id="welcomeMessage">
-    Let me Open the Chambers for you :)
-  </div>
-</div> -->
-<div style="height: 50px"></div>
-<div class="container">
-  <div class="meal-wrapper">
-    <div class="meal-search">
-      <h2 class="title">Find Meals For Your Ingredients</h2>
-      <p style="font-size: 15px">
-        Meal Genie grants wishes, like a dream machine!"
-      </p>
-      <div class="meal-search-box">
-        <input
-          type="text"
-          class="search-control"
-          placeholder="Enter an ingredient"
-          id="search-input"
-        />
-        <button type="submit" class="search-btn btn" id="search-btn">
-          <i class="fa fa-search search-icon"></i>
-        </button>
+  <div style="height: 60px"></div>
+  <div class="container">
+    <div class="meal-wrapper">
+      <div class="meal-search">
+        <h2 class="title">Find Meals For Your Ingredients</h2>
+        <p style="font-size: 15px">
+          Meal Genie grants wishes, like a dream machine!"
+        </p>
+        <div class="meal-search-box">
+          <input type="text" class="search-control" placeholder="Enter an ingredient" id="search-input" />
+          <button type="submit" class="search-btn btn" id="search-btn">
+            <i class="fa fa-search search-icon"></i>
+          </button>
+        </div>
+        <div class="filter-btn-wrapper">
+          <div class="category-tags" id="category-tags">
+          </div>
+        </div>
+
+        <div class="meal-result">
+          <h2 class="title">Your Search Results:</h2>
+          <div id="meal"></div>
+        </div>
+        <div class="meal-details">
+          <!-- recipe close btn -->
+          <button type="button" class="btn recipe-close-btn" id="recipe-close-btn">
+            <i class="fas fa-times"></i>
+          </button>
+          <!-- meal content -->
+          <div class="meal-details-content"></div>
+        </div>
       </div>
-   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-   <div class="filter-btn-wrapper">
-    <div class="category-tags" id="category-tags">
-      <!-- Category name tags will be added dynamically -->
     </div>
     
-  </div>
-  
-   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-   <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-      
-      <div class="meal-result">
-        <h2 class="title">Your Search Results:</h2>
-        <div id="meal"></div>
-      </div>
-      <div class="meal-details">
-        <!-- recipe close btn -->
-        <button
-          type="button"
-          class="btn recipe-close-btn"
-          id="recipe-close-btn"
-        >
-          <i class="fas fa-times"></i>
-        </button>
-        <!-- meal content -->
-        <div class="meal-details-content"></div>
-      </div>
-    </div>
-  </div>
-  <script>
-    // * Scripting for the easter egg animation STARTS here
-    function showWelcomeMessage() {
-      var welcomeMessage = document.getElementById("welcomeMessage");
-      var container = document.querySelector(".container2_2");
-      container.classList.add("blurred-background"); // Add the blurred background to the container
+    <script>
 
-      if (welcomeMessage.style.display === "none") {
-        welcomeMessage.style.display = "block";
-        setTimeout(removeElements, 3000); // Remove elements after 5 seconds
-      } else {
-        welcomeMessage.style.display = "none";
-      }
-    }
+      // * Scripting for the easter egg animation STARTS here
+      function showWelcomeMessage() {
+        var welcomeMessage = document.getElementById("welcomeMessage");
+        var container = document.querySelector(".container2_2");
+        container.classList.add("blurred-background");
 
-    function removeElements() {
-      var container = document.querySelector(".container2_2");
-      container.remove();
-    }
-    // * Scripting for the easter egg animation ENDS here
-    const searchInput = document.getElementById("search-input");
-    const placeholderText = "Enter an ingredient";
-    let currentIndex = 0;
-    let isTyping = true;
-
-    function typePlaceholderText() {
-      if (isTyping) {
-        searchInput.placeholder = placeholderText.substring(0, currentIndex);
-        currentIndex++;
-
-        if (currentIndex > placeholderText.length) {
-          currentIndex = 0;
+        if (welcomeMessage.style.display === "none") {
+          welcomeMessage.style.display = "block";
+          setTimeout(removeElements, 3000);
+        } else {
+          welcomeMessage.style.display = "none";
         }
       }
-    }
-    searchInput.addEventListener("focus", () => {
-      isTyping = false;
-      searchInput.placeholder = placeholderText; // Set the complete placeholder text when the user starts typing
-    });
-    searchInput.addEventListener("blur", () => {
-      isTyping = true;
-    });
-    setInterval(typePlaceholderText, 200); // Adjust the interval time (in milliseconds) to control the typing speed
-    $(document).ready(function () {
-      $("#search-btn").click(function () {
-        var searchBtn = $(this);
-        searchBtn.addClass("loading");
 
-        // Perform your search logic here
+      function removeElements() {
+        var container = document.querySelector(".container2_2");
+        container.remove();
+      }
 
-        // Example delay for demonstration purposes
-        setTimeout(function () {
-          searchBtn.removeClass("loading");
-        }, 2000);
-      });
-    });
-    const searchBtn = document.getElementById("search-btn");
-    const mealList = document.getElementById("meal");
-    const mealDetailsContent = document.querySelector(".meal-details-content");
-    const recipeCloseBtn = document.getElementById("recipe-close-btn");
+      const searchInput = document.getElementById("search-input");
+      const placeholderText = "Enter an ingredient";
+      let currentIndex = 0;
+      let isTyping = true;
 
-    // event listeners
-    searchBtn.addEventListener("click", getMealList);
-    mealList.addEventListener("click", getMealRecipe);
-    recipeCloseBtn.addEventListener("click", () => {
-      mealDetailsContent.parentElement.classList.remove("showRecipe");
-    });
-    // get meal list that matches with the ingredients, recipe name, or area
-    function getMealList() {
-      let searchInputTxt = document.getElementById("search-input").value.trim();
-      Promise.all([
-        fetch(
-          `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`
-        ).then((response) => response.json()),
-        fetch(
-          `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInputTxt}`
-        ).then((response) => response.json()),
-        fetch(
-          `https://www.themealdb.com/api/json/v1/1/filter.php?a=${searchInputTxt}`
-        ).then((response) => response.json()),
-        fetch(
-          `https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchInputTxt}`
-        ).then((response) => response.json()),
-      ]).then((dataArr) => {
-        let meals = [];
-        dataArr.forEach((data) => {
-          if (data.meals) {
-            meals.push(...data.meals);
+      function typePlaceholderText() {
+        if (isTyping) {
+          searchInput.placeholder = placeholderText.substring(0, currentIndex);
+          currentIndex++;
+
+          if (currentIndex > placeholderText.length) {
+            currentIndex = 0;
           }
+        }
+      }
+      searchInput.addEventListener("focus", () => {
+        isTyping = false;
+        searchInput.placeholder = placeholderText;
+      });
+      searchInput.addEventListener("blur", () => {
+        isTyping = true;
+      });
+      setInterval(typePlaceholderText, 200);
+      $(document).ready(function () {
+        $("#search-btn").click(function () {
+          var searchBtn = $(this);
+          searchBtn.addClass("loading");
+
+          // Perform your search logic here
+
+          // Example delay for demonstration purposes
+          setTimeout(function () {
+            searchBtn.removeClass("loading");
+          }, 2000);
         });
-        let html = "";
-        if (meals.length) {
-          meals.forEach((meal) => {
-            html += `
+      });
+      const searchBtn = document.getElementById("search-btn");
+      const mealList = document.getElementById("meal");
+      const mealDetailsContent = document.querySelector(".meal-details-content");
+      const recipeCloseBtn = document.getElementById("recipe-close-btn");
+
+      // event listeners
+      searchBtn.addEventListener("click", getMealList);
+      mealList.addEventListener("click", getMealRecipe);
+      recipeCloseBtn.addEventListener("click", () => {
+        mealDetailsContent.parentElement.classList.remove("showRecipe");
+      });
+      // get meal list that matches with the ingredients, recipe name, or area
+      function getMealList() {
+        let searchInputTxt = document.getElementById("search-input").value.trim();
+        Promise.all([
+          fetch(
+            `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`
+          ).then((response) => response.json()),
+          fetch(
+            `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInputTxt}`
+          ).then((response) => response.json()),
+          fetch(
+            `https://www.themealdb.com/api/json/v1/1/filter.php?a=${searchInputTxt}`
+          ).then((response) => response.json()),
+          fetch(
+            `https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchInputTxt}`
+          ).then((response) => response.json()),
+        ]).then((dataArr) => {
+          let meals = [];
+          dataArr.forEach((data) => {
+            if (data.meals) {
+              meals.push(...data.meals);
+            }
+          });
+          let html = "";
+          if (meals.length) {
+            meals.forEach((meal) => {
+              html += `
           <div class="meal-item" data-id="${meal.idMeal}">
             <div class="meal-img">
               <img src="${meal.strMealThumb}" alt="food">
@@ -163,33 +138,33 @@
             </div>
           </div>
         `;
-          });
-          mealList.classList.remove("notFound");
-        } else {
-          html = "Sorry, we didn't find any meal!";
-          mealList.classList.add("notFound");
-        }
-        mealList.innerHTML = html;
-      });
-    }
-
-    // get recipe of the meal
-    function getMealRecipe(e) {
-      e.preventDefault();
-      if (e.target.classList.contains("recipe-btn")) {
-        let mealItem = e.target.parentElement.parentElement;
-        fetch(
-          `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem.dataset.id}`
-        )
-          .then((response) => response.json())
-          .then((data) => mealRecipeModal(data.meals));
+            });
+            mealList.classList.remove("notFound");
+          } else {
+            html = "Sorry, we didn't find any meal!";
+            mealList.classList.add("notFound");
+          }
+          mealList.innerHTML = html;
+        });
       }
-    }
-    // create a modal
-    function mealRecipeModal(meal) {
-  console.log(meal);
-  meal = meal[0];
-  let html = `
+
+      // get recipe of the meal
+      function getMealRecipe(e) {
+        e.preventDefault();
+        if (e.target.classList.contains("recipe-btn")) {
+          let mealItem = e.target.parentElement.parentElement;
+          fetch(
+            `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem.dataset.id}`
+          )
+            .then((response) => response.json())
+            .then((data) => mealRecipeModal(data.meals));
+        }
+      }
+      // create a modal
+      function mealRecipeModal(meal) {
+        console.log(meal);
+        meal = meal[0];
+        let html = `
     <h2 class="recipe-title">${meal.strMeal}</h2>
     <div class="favorite-container">
       <i class="fas fa-heart favorite-icon"></i>
@@ -206,89 +181,80 @@
       <p>${meal.strInstructions}</p>
     </div>
   `;
-      mealDetailsContent.innerHTML = html;
-      mealDetailsContent.parentElement.classList.add("showRecipe");
+        mealDetailsContent.innerHTML = html;
+        mealDetailsContent.parentElement.classList.add("showRecipe");
 
-      const favoriteIcon = document.querySelector(".favorite-icon");
+        const favoriteIcon = document.querySelector(".favorite-icon");
 
-      // Check if the recipe is a favorite
-      fetch(`/is-favorite?recipeName=${encodeURIComponent(meal.strMeal)}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success && data.isFavorite) {
-            favoriteIcon.classList.add("favorite");
-          }
-        });
-
-      favoriteIcon.addEventListener("click", function () {
-        fetch("/add-favorite", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ recipeName: meal.strMeal }),
-        })
+        // Check if the recipe is a favorite
+        fetch(`/is-favorite?recipeName=${encodeURIComponent(meal.strMeal)}`)
           .then((response) => response.json())
           .then((data) => {
-            if (data.success) {
-              this.classList.add("favorite");
+            if (data.success && data.isFavorite) {
+              favoriteIcon.classList.add("favorite");
             }
           });
+
+        favoriteIcon.addEventListener("click", function () {
+          fetch("/add-favorite", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ recipeName: meal.strMeal }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                this.classList.add("favorite");
+              }
+            });
+        });
+      }
+
+      // Filter button click event handler
+      $("#filter-btn").click(function () {
+        // Show a prompt to enter the category
+        var category = prompt("Enter a category to filter by:");
+
+        if (category) {
+          // Call the filterMealsByCategory function with the entered category
+          filterMealsByCategory(category);
+        }
       });
-    }
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // Filter button click event handler
-$("#filter-btn").click(function () {
-  // Show a prompt to enter the category
-  var category = prompt("Enter a category to filter by:");
+      // Fetch categories from the API and generate category name tags
+      fetch("https://www.themealdb.com/api/json/v1/1/categories.php")
+        .then((response) => response.json())
+        .then((data) => {
+          const categoryTags = document.getElementById("category-tags");
+          data.categories.forEach((category) => {
+            const tag = document.createElement("span");
+            tag.classList.add("category-tag");
+            tag.textContent = category.strCategory;
+            tag.addEventListener("click", function () {
+              filterMealsByCategory(category.strCategory);
+            });
+            categoryTags.appendChild(tag);
+          });
+        });
 
-  if (category) {
-    // Call the filterMealsByCategory function with the entered category
-    filterMealsByCategory(category);
-  }
-});
+      // Function to filter meals by category
+      function filterMealsByCategory(category) {
+        // Get the current search input value
+        var searchInputTxt = document.getElementById("search-input").value.trim();
 
-// Function to filter meals by category
-// Fetch categories from the API and populate the dropdown list options
-// Fetch categories from the API and populate the dropdown list options
-// Fetch categories from the API and generate category name tags
-fetch("https://www.themealdb.com/api/json/v1/1/categories.php")
-  .then((response) => response.json())
-  .then((data) => {
-    const categoryTags = document.getElementById("category-tags");
-    data.categories.forEach((category) => {
-      const tag = document.createElement("span");
-      tag.classList.add("category-tag");
-      tag.textContent = category.strCategory;
-      tag.addEventListener("click", function () {
-        filterMealsByCategory(category.strCategory);
-      });
-      categoryTags.appendChild(tag);
-    });
-  });
-
-// Function to filter meals by category
-function filterMealsByCategory(category) {
-  // Get the current search input value
-  var searchInputTxt = document.getElementById("search-input").value.trim();
-
-  // Fetch the meals filtered by both the search input and the category
-  fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}&c=${category}`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      let meals = data.meals || [];
-      let html = "";
-      if (meals.length) {
-        meals.forEach((meal) => {
-          html += `
+        // Fetch the meals filtered by both the search input and the category
+        fetch(
+          `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}&c=${category}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            let meals = data.meals || [];
+            let html = "";
+            if (meals.length) {
+              meals.forEach((meal) => {
+                html += `
             <div class="meal-item" data-id="${meal.idMeal}">
               <div class="meal-img">
                 <img src="${meal.strMealThumb}" alt="food">
@@ -299,18 +265,16 @@ function filterMealsByCategory(category) {
               </div>
             </div>
           `;
-        });
-        mealList.classList.remove("notFound");
-      } else {
-        html = "Sorry, we didn't find any meal!";
-        mealList.classList.add("notFound");
+              });
+              mealList.classList.remove("notFound");
+            } else {
+              html = "Sorry, we didn't find any meal!";
+              mealList.classList.add("notFound");
+            }
+            mealList.innerHTML = html;
+          });
       }
-      mealList.innerHTML = html;
-    });
-}
 
-
-
-  </script>
-  <%- include("templates/afterLoginFooter") %>
-</div>
+    </script>
+    <%- include("templates/afterLoginFooter") %>
+  </div>

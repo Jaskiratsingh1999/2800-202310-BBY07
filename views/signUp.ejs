@@ -1,116 +1,5 @@
 <%- include("templates/header") %>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous"></script>
-  <script>
-    $(document).ready(function () {
-      $(".dropdown-menu a").click(function () {
-        var selectedOption = $(this).attr("value");
-        $("#dietaryPreferencesDropdown").text(selectedOption);
-        $("#dietaryPreferences").val(selectedOption);
-      });
 
-      $("#togglePassword").click(function () {
-        var inputElement = $("#password");
-        var tooltipInstance = bootstrap.Tooltip.getInstance(this);
-
-        if (inputElement.attr("type") === "password") {
-          inputElement.attr("type", "text");
-          $(this).removeClass("fa-eye-slash");
-          $(this).addClass("fa-eye");
-          tooltipInstance.dispose();
-          new bootstrap.Tooltip(this, { title: 'Hide password' });
-        } else {
-          inputElement.attr("type", "password");
-          $(this).removeClass("fa-eye");
-          $(this).addClass("fa-eye-slash");
-          tooltipInstance.dispose();
-          new bootstrap.Tooltip(this, { title: 'Show password' });
-        }
-      });
-
-      $("form").on("submit", function (event) {
-        var email = $("#email").val();
-        var username = $("#username").val();
-        var password = $("#password").val();
-
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  // Basic email regex
-
-        if (!emailRegex.test(email)) {
-          event.preventDefault();
-          alert("Please enter a valid email address.");
-        }
-
-        if (!username || !password) {
-          event.preventDefault();
-          alert("Please fill all the mandatory fields.");
-        }
-      });
-
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-      })
-    });
-  </script>
-
-  <div class="d-flex flex-column min-vh-100">
-    <div class="container py-5">
-      <div class="row justify-content-center align-items-center">
-        <div class="col-md-6 mt-5" id="overlay">
-          <h1 style="color: rgb(0, 0, 0)">Sign Up</h1>
-          <form action="/signupSubmit" method="post">
-            <div class="mb-3">
-              <label for="email" class="form-label">Email:<span class="required">*</span></label>
-              <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" />
-            </div>
-            <div class="mb-3">
-              <label for="username" class="form-label">Username:<span class="required">*</span></label>
-              <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" />
-            </div>
-            <div class="mb-3 password-container">
-              <label for="password" class="form-label">Password:<span class="required">*</span></label>
-              <input type="password" id="password" name="password" class="form-control"
-                placeholder="Enter your password" />
-              <i id="togglePassword" class="fas fa-eye-slash fa-2x" data-bs-toggle="tooltip" title="Show password"></i>
-            </div>
-            <div class="mb-3">
-              <label for="dietaryPreferences" class="form-label">Dietary Preferences:</label>
-              <br>
-              <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle dropdown-btn" type="button" id="dietaryPreferencesDropdown"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  Select
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dietaryPreferencesDropdown">
-                  <li><a class="dropdown-item" href="#" value="None">None</a></li>
-                  <li><a class="dropdown-item" href="#" value="Vegan">Vegan</a></li>
-                  <li><a class="dropdown-item" href="#" value="Vegetarian">Vegetarian</a></li>
-                  <li><a class="dropdown-item" href="#" value="Keto">Keto</a></li>
-                  <li><a class="dropdown-item" href="#" value="Paleo">Paleo</a></li>
-                  <li><a class="dropdown-item" href="#" value="Carnivore">Carnivore</a></li>
-                </ul>
-                <input type="hidden" id="dietaryPreferences" name="dietaryPreferences" />
-              </div>
-            </div>
-            <p class="note">Fields marked with <span class="required">*</span> are mandatory</p>
-            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const clearBtn = document.querySelector(".clear-btn");
-    const form = document.querySelector("form");
-  
-    clearBtn.addEventListener("click", () => {
-      form.reset();
-    });
-  </script>
   <style>
     body {
       overflow-y: hidden;
@@ -131,6 +20,7 @@
       text-align: center;
       margin-bottom: 2%;
     }
+
     #signUp {
       margin-left: 5.5%;
       padding: 2%;
@@ -202,8 +92,6 @@
       background-color: #305c8b;
     }
 
-
-
     .required {
       color: red;
     }
@@ -220,11 +108,119 @@
     .password-container .fa-eye,
     .password-container .fa-eye-slash {
       position: absolute;
-      right: 15px;
+      right: 10px;
       bottom: -5px;
       top: 75%;
       transform: translateY(-50%);
       cursor: pointer;
     }
   </style>
+
+  <div class="d-flex flex-column min-vh-100">
+    <div class="container py-5">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-6 mt-5" id="overlay">
+          <h1 style="color: rgb(0, 0, 0)">Sign Up</h1>
+          <form action="/signupSubmit" method="post">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:<span class="required">*</span></label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" />
+            </div>
+            <div class="mb-3">
+              <label for="username" class="form-label">Username:<span class="required">*</span></label>
+              <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" />
+            </div>
+            <div class="mb-3 password-container">
+              <label for="password" class="form-label">Password:<span class="required">*</span></label>
+              <input type="password" id="password" name="password" class="form-control"
+                placeholder="Enter your password" />
+              <i id="togglePassword" class="fas fa-eye-slash fa-2x" data-bs-toggle="tooltip" title="Show password"></i>
+            </div>
+            <div class="mb-3">
+              <label for="dietaryPreferences" class="form-label">Dietary Preferences:</label>
+              <br>
+              <div class="dropdown">
+                <button class="btn btn-info dropdown-toggle dropdown-btn" type="button" id="dietaryPreferencesDropdown"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Select
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dietaryPreferencesDropdown">
+                  <li><a class="dropdown-item" href="#" value="None">None</a></li>
+                  <li><a class="dropdown-item" href="#" value="Vegan">Vegan</a></li>
+                  <li><a class="dropdown-item" href="#" value="Vegetarian">Vegetarian</a></li>
+                  <li><a class="dropdown-item" href="#" value="Keto">Keto</a></li>
+                  <li><a class="dropdown-item" href="#" value="Paleo">Paleo</a></li>
+                  <li><a class="dropdown-item" href="#" value="Carnivore">Carnivore</a></li>
+                </ul>
+                <input type="hidden" id="dietaryPreferences" name="dietaryPreferences" />
+              </div>
+            </div>
+            <p class="note">Fields marked with <span class="required">*</span> are mandatory</p>
+            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const clearBtn = document.querySelector(".clear-btn");
+    const form = document.querySelector("form");
+
+    clearBtn.addEventListener("click", () => {
+      form.reset();
+    });
+
+    $(document).ready(function () {
+      $(".dropdown-menu a").click(function () {
+        var selectedOption = $(this).attr("value");
+        $("#dietaryPreferencesDropdown").text(selectedOption);
+        $("#dietaryPreferences").val(selectedOption);
+      });
+
+      $("#togglePassword").click(function () {
+        var inputElement = $("#password");
+        var tooltipInstance = bootstrap.Tooltip.getInstance(this);
+
+        if (inputElement.attr("type") === "password") {
+          inputElement.attr("type", "text");
+          $(this).removeClass("fa-eye-slash");
+          $(this).addClass("fa-eye");
+          tooltipInstance.dispose();
+          new bootstrap.Tooltip(this, { title: 'Hide password' });
+        } else {
+          inputElement.attr("type", "password");
+          $(this).removeClass("fa-eye");
+          $(this).addClass("fa-eye-slash");
+          tooltipInstance.dispose();
+          new bootstrap.Tooltip(this, { title: 'Show password' });
+        }
+      });
+
+      $("form").on("submit", function (event) {
+        var email = $("#email").val();
+        var username = $("#username").val();
+        var password = $("#password").val();
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  // Basic email regex
+
+        if (!emailRegex.test(email)) {
+          event.preventDefault();
+          alert("Please enter a valid email address.");
+        }
+
+        if (!username || !password) {
+          event.preventDefault();
+          alert("Please fill all the mandatory fields.");
+        }
+      });
+
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+    });
+
+  </script>
+
   <%- include("templates/footer") %>
