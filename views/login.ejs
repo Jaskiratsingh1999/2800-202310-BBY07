@@ -1,4 +1,55 @@
 <%- include("templates/header") %>
+  <style>
+    .required {
+      color: red;
+    }
+
+    .login {
+      margin-bottom: 20%;
+      text-align: center;
+    }
+
+    .loginBtn {
+      margin-top: 2%;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      background-color: rgba(66,
+          135,
+          245,
+          0.8);
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .form-label {
+      font-size: 18px;
+    }
+
+    body {
+      overflow-y: hidden;
+      background-image: url(/signup.jpg);
+      background-size: cover;
+      background-position: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .password-container .fa-eye,
+    .password-container .fa-eye-slash {
+      position: absolute;
+      right: 15px;
+      top: 35px;
+      cursor: pointer;
+    }
+  </style>
   <div class="d-flex flex-column min-vh-100">
     <div class="container py-5">
       <div class="row justify-content-center align-items-center">
@@ -24,126 +75,74 @@
       </div>
     </div>
   </div>
-  <style>
-    
-    .required {
-      color: red;
-    }
 
-    .login {
-      margin-bottom: 20%;
-      text-align: center;
-    }
-    .loginBtn {
-      margin-top: 2%;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: bold;
-      text-transform: uppercase;
-      background-color: rgba(66,
-          135,
-          245,
-          0.8);
-      /* Adjust the alpha value (0.8) for transparency */
-      color: #ffffff;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+  <script>
 
-    .form-label {
-      font-size: 18px;
-    }
+    $(document).ready(function () {
+      var tooltip = null;
 
-    body {
-      overflow-y: hidden;
-      background-image: url(/signup.jpg);
-      background-size: cover;
-      background-position: center;
-      backdrop-filter: blur(2px);
-    }
+      createTooltip('Show password');
 
-    .password-container {
-      position: relative;
-    }
+      $("#togglePassword").click(function () {
+        var inputElement = $("#password");
 
-    .password-container .fa-eye,
-    .password-container .fa-eye-slash {
-      position: absolute;
-      right: 15px;
-      top: 35px;
-      cursor: pointer;
-    }
-  </style>
-
-  <%- include("templates/footer") %>
-    <script>
-      $(document).ready(function () {
-        var tooltip = null;
-
-        createTooltip('Show password');
-
-        $("#togglePassword").click(function () {
-          var inputElement = $("#password");
-
-          if (inputElement.attr("type") === "password") {
-            inputElement.attr("type", "text");
-            $(this).removeClass("fa-eye-slash");
-            $(this).addClass("fa-eye");
-            $(this).attr('title', 'Hide password');
-            tooltip.dispose();
-            createTooltip('Hide password');
-          } else {
-            inputElement.attr("type", "password");
-            $(this).removeClass("fa-eye");
-            $(this).addClass("fa-eye-slash");
-            $(this).attr('title', 'Show password');
-            tooltip.dispose();
-            createTooltip('Show password');
-          }
-        });
-
-        function createTooltip(title) {
-          tooltip = new bootstrap.Tooltip(document.querySelector('#togglePassword'), {
-            title: title
-          });
-        }
-      });
-
-
-
-      $("form").on("submit", function (e) {
-        var email = $("#email").val();
-        var password = $("#password").val();
-        if (email === "" || password === "") {
-          alert("Both email and password fields must be filled in");
-          e.preventDefault();
-        }
-      });
-
-      document
-        .getElementById("forgotPasswordLink")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          handleForgotPassword();
-        });
-
-      function handleForgotPassword() {
-        const email = document.getElementById("email").value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!email) {
-          document.getElementById("forgotPasswordMessage").textContent =
-            "If you have forgotten your password, please enter your email in the email address bar and then click on the link below.";
-        } else if (!emailRegex.test(email)) {
-          document.getElementById("forgotPasswordMessage").textContent =
-            "Please enter a valid email address.";
+        if (inputElement.attr("type") === "password") {
+          inputElement.attr("type", "text");
+          $(this).removeClass("fa-eye-slash");
+          $(this).addClass("fa-eye");
+          $(this).attr('title', 'Hide password');
+          tooltip.dispose();
+          createTooltip('Hide password');
         } else {
-          // If email is entered and has the correct format, navigate to the /forgot-password route
-          window.location.href = `/forgot-password?email=${encodeURIComponent(
-            email
-          )}`;
+          inputElement.attr("type", "password");
+          $(this).removeClass("fa-eye");
+          $(this).addClass("fa-eye-slash");
+          $(this).attr('title', 'Show password');
+          tooltip.dispose();
+          createTooltip('Show password');
         }
+      });
+
+      function createTooltip(title) {
+        tooltip = new bootstrap.Tooltip(document.querySelector('#togglePassword'), {
+          title: title
+        });
       }
-    </script>
+    });
+
+    $("form").on("submit", function (e) {
+      var email = $("#email").val();
+      var password = $("#password").val();
+      if (email === "" || password === "") {
+        alert("Both email and password fields must be filled in");
+        e.preventDefault();
+      }
+    });
+
+    document
+      .getElementById("forgotPasswordLink")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        handleForgotPassword();
+      });
+
+    function handleForgotPassword() {
+      const email = document.getElementById("email").value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!email) {
+        document.getElementById("forgotPasswordMessage").textContent =
+          "If you have forgotten your password, please enter your email in the email address bar and then click on the link below.";
+      } else if (!emailRegex.test(email)) {
+        document.getElementById("forgotPasswordMessage").textContent =
+          "Please enter a valid email address.";
+      } else {
+        // If email is entered and has the correct format, navigate to the /forgot-password route
+        window.location.href = `/forgot-password?email=${encodeURIComponent(
+          email
+        )}`;
+      }
+    }
+
+  </script>
+  <%- include("templates/footer") %>
