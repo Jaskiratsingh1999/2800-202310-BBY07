@@ -164,13 +164,7 @@
   </div>
 
   <script>
-    const clearBtn = document.querySelector(".clear-btn");
     const form = document.querySelector("form");
-
-    clearBtn.addEventListener("click", () => {
-      form.reset();
-    });
-
     $(document).ready(function () {
       $(".dropdown-menu a").click(function () {
         var selectedOption = $(this).attr("value");
