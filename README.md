@@ -53,17 +53,28 @@ Our application boasts a user-friendly and intuitive design, ensuring a seamless
 
 ## 5. Known Bugs and Limitations
 Here are some known bugs:
-* One recipe, when favorited by users, cannot be "unfavorited" or removed from user's favorite's page
+* One specific recipe, when favorited by users, cannot be "unfavorited" or removed from user's favorite's page
 * Some video links received from MealDB API are defunct 
-* ...
+* A handful of recipes are returned twice in the search results
 
 ## 6. Features for Future
 What we'd like to build in the future:
 * Ability to input user's available ingredients and autosearch according to ingredients
-* Ability to search using voice command
+* Feature to input search field value using voice command
 * Ability to 'rate' recipes using thumb up/down and see ratings
+
+## 7. Credits
+* [MealDB API](https://www.themealdb.com/api.php)
+* [GMail API](https://developers.google.com/gmail/api)
+* [Bootstrap](https://getbootstrap.com/)
+* [Font Awesome](https://fontawesome.com/)
+* [Google Fonts](https://fonts.google.com/)
+* ChatGPT
+* App logo created by Midjourney 
+* Icons made by [www.flaticon.com](https://www.flaticon.com/) 
+* For images used in the project, we have used [Unsplash](https://unsplash.com/) and [Pexels](https://www.pexels.com/).
 	
-## 7. Contents of Folder
+## 8. Contents of Folder
 ```
 │   .gitignore
 │   databaseConnection.js
@@ -75,56 +86,40 @@ What we'd like to build in the future:
 │   utils.js
 │
 ├───public
-│   │   404.jpeg
-│   │   about-img.jpg
-│   │   about-photo.jpg
-│   │   anshul.jpg
-│   │   back-arrow-icon.svg
-│   │   building-image.jpg
-│   │   default.jpg
-│   │   emily.jpeg
-│   │   favlogo1.ico
-│   │   favoriteb.png
-│   │   food-menu1.jpg
-│   │   food-menu2.jpg
-│   │   food-menu3.jpg
-│   │   food-menu4.jpg
-│   │   food-menu5.jpg
-│   │   food-menu6.jpg
-│   │   food1.jpg
-│   │   food2.jpg
-│   │   food3.jpg
-│   │   header-image2.jpg
-│   │   heart-fill.svg
-│   │   heart.svg
-│   │   home.svg
-│   │   homebb.png
-│   │   im11.jpeg
-│   │   im12.jpeg
-│   │   im14.jpeg
-│   │   im16.jpeg
-│   │   im17.jpeg
-│   │   im18.jpeg
-│   │   im19.jpeg
-│   │   jas.jpg
-│   │   jinn.jpg
-│   │   loginPage.jpeg
-│   │   male-photo1.jpg
-│   │   male-photo2.jpg
-│   │   male-photo3.jpg
-│   │   profilebb.png
-│   │   restraunt-image.jpg
-│   │   sardarprogrammer.png
-│   │   styles.css
-│   │   styleSearch.css
-│   │   user.svg
-│   │   yousuf.jpg
-│   │
-│   └───uploads
-│           anshul_1683836320811-173144699.jpg
-│           Anshul_1683837249777-66060256.jpeg
-│           jas_1683834239791-352789668.jpg
-│           Patrick_1683834361127-259332959.jpg
+│       about-photo.jpg
+│       anshul.jpg
+│       default.jpg
+│       emily.jpeg
+│       faq.jpeg
+│       favlogo1.ico
+│       genie12.png
+│       heart1.png
+│       heart2.png
+│       hm1.jpeg
+│       hm12.jpeg
+│       hm2.jpeg
+│       hm3.jpg
+│       home1.png
+│       home2.png
+│       im11.jpeg
+│       im12.jpeg
+│       im14.jpeg
+│       im17.jpeg
+│       im18.jpeg
+│       im19.jpeg
+│       jas.jpg
+│       logo.png
+│       male-photo1.jpg
+│       male-photo3.jpg
+│       members.jpeg
+│       profile1.png
+│       profile2.png
+│       restraunt-image.jpg
+│       sardarprogrammer.png
+│       signup.jpg
+│       styles.css
+│       styleSearch.css
+│       yousuf.jpg
 │
 └───views
     │   404.ejs
@@ -138,14 +133,15 @@ What we'd like to build in the future:
     │   password-reset-confirmation.ejs
     │   password-reset-success.ejs
     │   password-reset.ejs
+    │   policyAfter.ejs
+    │   policyBefore.ejs
     │   profile.ejs
-    │   search.ejs
     │   signUp.ejs
     │
     └───templates
+            afterLoginFooter.ejs
             afterLoginHeader.ejs
             footer.ejs
             header.ejs
             headerSearch.ejs
-
 ```
