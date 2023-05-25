@@ -1,8 +1,25 @@
 <%- include("templates/header") %>
 
   <style>
+    html,
     body {
-      overflow-y: hidden;
+      height: 100%;
+    }
+
+    .d-flex.flex-column.min-vh-100 {
+      min-height: 100%;
+    }
+
+    .footer {
+      background-color: #f8f8f7;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
     }
 
     .form-label {
@@ -10,6 +27,7 @@
     }
 
     body {
+      overflow-y: hidden;
       background-image: url(/signup.jpg);
       background-size: cover;
       background-position: center;
@@ -33,11 +51,12 @@
     }
 
     .dropdown-toggle {
-      background-color: #85b0de;
+      background-color: #d9d9da;
       border: none;
       color: black;
-      padding: 10px 20px;
+      margin-top: 0px;
       font-size: 11px;
+      height: 30px;
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s ease;
@@ -104,14 +123,15 @@
     .password-container {
       position: relative;
     }
-
+    
+    .form-label {
+      font-size: 16px;
+    }
     .password-container .fa-eye,
     .password-container .fa-eye-slash {
       position: absolute;
-      right: 10px;
-      bottom: -5px;
-      top: 75%;
-      transform: translateY(-50%);
+      right: 15px;
+      top: 35px;
       cursor: pointer;
     }
   </style>
@@ -122,17 +142,19 @@
           <h1 style="color: rgb(0, 0, 0)">Sign Up</h1>
           <form action="/signupSubmit" method="post">
             <div class="mb-3">
-              <label for="email" class="form-label">Email:<span class="required">*</span></label>
-              <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" />
+              <label for="email" class="form-label">Email<span class="required"> *</span></label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email"  style="height: 30px;"/>
             </div>
             <div class="mb-3">
-              <label for="username" class="form-label">Username:<span class="required">*</span></label>
-              <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" />
+              <label for="username" class="form-label">Username<span class="required"> *</span></label>
+              <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username"
+              style="height: 30px;"/>
             </div>
             <div class="mb-3 password-container">
-              <label for="password" class="form-label">Password:<span class="required">*</span></label>
+              <label for="password" class="form-label">Password<span class="required"> *</span></label>
               <input type="password" id="password" name="password" class="form-control"
-                placeholder="Enter your password" />
+                placeholder="Enter your password" 
+                style="height: 30px;"/>
               <i id="togglePassword" class="fas fa-eye-slash fa-2x" data-bs-toggle="tooltip" title="Show password"></i>
             </div>
             <div class="mb-3">
@@ -185,18 +207,18 @@
       var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {});
       errorModal.show();
     }
-  
+
     $(document).ready(function () {
       $(".dropdown-menu a").click(function () {
         var selectedOption = $(this).attr("value");
         $("#dietaryPreferencesDropdown").text(selectedOption);
         $("#dietaryPreferences").val(selectedOption);
       });
-  
+
       $("#togglePassword").click(function () {
         var inputElement = $("#password");
         var tooltipInstance = bootstrap.Tooltip.getInstance(this);
-  
+
         if (inputElement.attr("type") === "password") {
           inputElement.attr("type", "text");
           $(this).removeClass("fa-eye-slash");
@@ -211,17 +233,17 @@
           new bootstrap.Tooltip(this, { title: 'Show password' });
         }
       });
-  
+
       $("form").on("submit", function (event) {
         event.preventDefault();
-  
+
         var email = $("#email").val();
         var username = $("#username").val();
         var password = $("#password").val();
         var dietaryPreferences = $("#dietaryPreferences").val();
-  
+
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
+
         if (!emailRegex.test(email)) {
           showErrorModal("Please enter a valid email address.");
           return;
@@ -236,7 +258,7 @@
           showErrorModal("Password must be at least 7 characters long.");
           return;
         }
-  
+
         $.ajax({
           type: "POST",
           url: "/signupSubmit",
@@ -246,15 +268,15 @@
             password: password,
             dietaryPreferences: dietaryPreferences
           },
-          success: function(data, status, xhr) {
+          success: function (data, status, xhr) {
             window.location.href = "/members";
           },
-          error: function(jqXHR, textStatus, errorThrown) {
+          error: function (jqXHR, textStatus, errorThrown) {
             showErrorModal(jqXHR.responseText);
           }
         });
       });
-  
+
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)

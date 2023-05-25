@@ -1,5 +1,26 @@
 <%- include("templates/header") %>
   <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .d-flex.flex-column.min-vh-100 {
+      min-height: 100%;
+    }
+
+    .footer {
+      background-color: #f8f8f7;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+
     .required {
       color: red;
     }
@@ -42,6 +63,9 @@
       position: relative;
     }
 
+    .form-label {
+      font-size: 16px;
+    }
     .password-container .fa-eye,
     .password-container .fa-eye-slash {
       position: absolute;
@@ -57,12 +81,12 @@
           <h1 class="login">Welcome Back Genies!</h1>
           <form action="/loggingin" method="post">
             <div class="mb-3">
-              <label for="email" class="form-label">Email address:<span class="required">*</span></label>
-              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required />
+              <label for="email" class="form-label">Email address<span class="required"> *</span></label>
+              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required placeholder="Enter your email" style="height: 30px;"/>
             </div>
             <div class="mb-3 password-container">
-              <label for="password" class="form-label">Password:<span class="required">*</span></label>
-              <input type="password" class="form-control" id="password" name="password" required />
+              <label for="password" class="form-label">Password<span class="required"> *</span></label>
+              <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password" style="height: 30px;"/>
               <i id="togglePassword" class="fas fa-eye-slash fa-2x" data-bs-toggle="tooltip" title="Show password"></i>
               <p id="forgotPasswordMessage" name="forgotPasswordMessage"></p>
               <p>
@@ -70,6 +94,8 @@
               </p>
             </div>
             <button type="submit" class="loginBtn">Ready, Set, Cook!</button>
+            
+            <p class="mt-5" style="font-size: 12px;">Don't have an account? <a href="/signUp" style="font-size: 14px;">Sign Up</a></p>
             <!-- Error modal -->
             <div id="errorModal" class="modal" tabindex="-1">
               <div class="modal-dialog">
@@ -93,90 +119,92 @@
       </div>
     </div>
   </div>
-  <%- include("templates/footer") %>
-    <script>
-      $(document).ready(function () {
-        var tooltip = null;
 
-        createTooltip('Show password');
+  <script>
+    $(document).ready(function () {
+      var tooltip = null;
 
-        $("#togglePassword").click(function () {
-          var inputElement = $("#password");
+      createTooltip('Show password');
 
-          if (inputElement.attr("type") === "password") {
-            inputElement.attr("type", "text");
-            $(this).removeClass("fa-eye-slash");
-            $(this).addClass("fa-eye");
-            $(this).attr('title', 'Hide password');
-            tooltip.dispose();
-            createTooltip('Hide password');
-          } else {
-            inputElement.attr("type", "password");
-            $(this).removeClass("fa-eye");
-            $(this).addClass("fa-eye-slash");
-            $(this).attr('title', 'Show password');
-            tooltip.dispose();
-            createTooltip('Show password');
-          }
-        });
+      $("#togglePassword").click(function () {
+        var inputElement = $("#password");
 
-        function createTooltip(title) {
-          tooltip = new bootstrap.Tooltip(document.querySelector('#togglePassword'), {
-            title: title
-          });
-        }
-      });
-
-      $("form").on("submit", function (e) {
-        e.preventDefault();
-
-        var email = $("#email").val();
-        var password = $("#password").val();
-
-        if (email === "" || password === "") {
-          alert("Both email and password fields must be filled in");
-          return;
-        }
-
-        $.ajax({
-          url: "/loggingin",
-          type: "POST",
-          data: { email: email, password: password },
-          success: function () {
-            window.location.href = '/members';
-          },
-          error: function (xhr) {
-            var response = JSON.parse(xhr.responseText);
-            // Show modal with error message
-            $("#errorText").text(response.error);
-            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            errorModal.show();
-          }
-        });
-      });
-
-      document
-        .getElementById("forgotPasswordLink")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          handleForgotPassword();
-        });
-
-      function handleForgotPassword() {
-        const email = document.getElementById("email").value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!email) {
-          document.getElementById("forgotPasswordMessage").textContent =
-            "If you have forgotten your password, please enter your email in the email address bar and then click on the link below.";
-        } else if (!emailRegex.test(email)) {
-          document.getElementById("forgotPasswordMessage").textContent =
-            "Please enter a valid email address.";
+        if (inputElement.attr("type") === "password") {
+          inputElement.attr("type", "text");
+          $(this).removeClass("fa-eye-slash");
+          $(this).addClass("fa-eye");
+          $(this).attr('title', 'Hide password');
+          tooltip.dispose();
+          createTooltip('Hide password');
         } else {
-          // If email is entered and has the correct format, navigate to the /forgot-password route
-          window.location.href = `/forgot-password?email=${encodeURIComponent(
-            email
-          )}`;
+          inputElement.attr("type", "password");
+          $(this).removeClass("fa-eye");
+          $(this).addClass("fa-eye-slash");
+          $(this).attr('title', 'Show password');
+          tooltip.dispose();
+          createTooltip('Show password');
         }
+      });
+
+      function createTooltip(title) {
+        tooltip = new bootstrap.Tooltip(document.querySelector('#togglePassword'), {
+          title: title
+        });
       }
-    </script>
+    });
+
+    $("form").on("submit", function (e) {
+      e.preventDefault();
+
+      var email = $("#email").val();
+      var password = $("#password").val();
+
+      if (email === "" || password === "") {
+        alert("Both email and password fields must be filled in");
+        return;
+      }
+
+      $.ajax({
+        url: "/loggingin",
+        type: "POST",
+        data: { email: email, password: password },
+        success: function () {
+          window.location.href = '/members';
+        },
+        error: function (xhr) {
+          var response = JSON.parse(xhr.responseText);
+          // Show modal with error message
+          $("#errorText").text(response.error);
+          var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+          errorModal.show();
+        }
+      });
+    });
+
+    document
+      .getElementById("forgotPasswordLink")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        handleForgotPassword();
+      });
+
+    function handleForgotPassword() {
+      const email = document.getElementById("email").value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!email) {
+        document.getElementById("forgotPasswordMessage").textContent =
+          "If you have forgotten your password, please enter your email in the email address bar and then click on the link below.";
+      } else if (!emailRegex.test(email)) {
+        document.getElementById("forgotPasswordMessage").textContent =
+          "Please enter a valid email address.";
+      } else {
+        // If email is entered and has the correct format, navigate to the /forgot-password route
+        window.location.href = `/forgot-password?email=${encodeURIComponent(
+          email
+        )}`;
+      }
+    }
+  </script>
+
+  <%- include("templates/footer") %>

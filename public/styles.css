@@ -77,7 +77,6 @@ body {
 }
 
 .navbar {
-    box-shadow: 0px 5px 10px 0px rgb(126, 126, 126);
     position: fixed;
     background-color: rgb(255, 255, 255);
     background-color: rgb(255, 255, 255);
@@ -488,15 +487,10 @@ body {
         display: block;
     }
 
-    .logo,
-    .menu-items {
-        /* display: none; */
-    }
-
     .navbar-container {
         display: block;
         position: relative;
-        height: 64px;
+        height: 52px;
     }
 
     .navbar-container input[type='checkbox'] {
@@ -514,7 +508,7 @@ body {
         position: absolute;
         width: 40px;
         height: 32px;
-        top: 16px;
+        top: 10px;
         left: 8px;
         display: flex;
         flex-direction: column;
@@ -551,9 +545,9 @@ body {
 
     .logo {
         position: absolute;
-        top: 10px;
         right: 8px;
         font-size: 3rem;
+        margin-bottom: 5px;
     }
 
     .menu-items li {
@@ -642,12 +636,3 @@ body {
     }
 }
 
-
-
-/* !Our Footer */
-
-#bottom-navbar>.footerImg {
-    width: 40px;
-    height: 30px;
-    margin: 0 auto;
-}
